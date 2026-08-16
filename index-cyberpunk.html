@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WMT — Botón Mundial</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        cyber: { dark: '#0a0a0f', darker: '#050508', card: '#0d0d15', border: '#1a1a2e' },
+        neon: { red: '#ff0033', redLight: '#ff4444', redDark: '#cc0029', cyan: '#00f0ff', green: '#39ff14', purple: '#bf5af2', yellow: '#ffe600', orange: '#ff6b35' },
+      },
+      fontFamily: {
+        orbitron: ['Orbitron', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      }
+    }
+  }
+}
+</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0f; color: #e0e0e0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+  .scanlines::after {
+    content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none; z-index: 9999;
+  }
+
+  .glitch { position: relative; }
+  .glitch::before, .glitch::after {
+    content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  }
+  .glitch::before { animation: glitch1 3s infinite; color: #ff0033; z-index: -1; }
+  .glitch::after { animation: glitch2 3s infinite; color: #00f0ff; z-index: -2; }
+  @keyframes glitch1 {
+    0%, 95%, 100% { transform: translate(0); } 96% { transform: translate(-3px, 2px); } 97% { transform: translate(3px, -1px); }
+  }
+  @keyframes glitch2 {
+    0%, 95%, 100% { transform: translate(0); } 96% { transform: translate(3px, -2px); } 97% { transform: translate(-3px, 1px); }
+  }
+
+  .pulse-glow-red { animation: pulseGlowRed 2s ease-in-out infinite alternate; }
+  @keyframes pulseGlowRed {
+    from { box-shadow: 0 0 20px rgba(255,0,51,0.3), 0 0 40px rgba(255,0,51,0.1); }
+    to { box-shadow: 0 0 35px rgba(255,0,51,0.5), 0 0 70px rgba(255,0,51,0.2), 0 0 100px rgba(255,0,51,0.1); }
+  }
+
+  .grid-bg {
+    background-image: linear-gradient(rgba(255,0,51,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,51,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .particle { position: absolute; width: 2px; height: 2px; border-radius: 50%; animation: floatUp linear infinite; }
+  @keyframes floatUp {
+    0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; }
+    100% { transform: translateY(-100vh) translateX(var(--drift)); opacity: 0; }
+  }
+
+  .radar-ring { position: absolute; border-radius: 50%; border: 1px solid rgba(255,0,51,0.12); animation: radarPulse 3s ease-out infinite; }
+  @keyframes radarPulse { 0% { transform: scale(0.8); opacity: 0.6; } 100% { transform: scale(2.5); opacity: 0; } }
+
+  .feature-card {
+    background: linear-gradient(135deg, rgba(13,13,21,0.9), rgba(26,26,46,0.6));
+    border: 1px solid rgba(255,0,51,0.1);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: blur(20px);
+  }
+  .feature-card:hover {
+    border-color: rgba(255,0,51,0.4);
+    box-shadow: 0 0 30px rgba(255,0,51,0.12), inset 0 0 30px rgba(255,0,51,0.04);
+    transform: translateY(-4px);
+  }
+
+  .btn-cyber {
+    position: relative; overflow: hidden; background: linear-gradient(135deg, #ff0033, #ff4444); transition: all 0.3s;
+  }
+  .btn-cyber:hover { box-shadow: 0 0 30px rgba(255,0,51,0.4), 0 0 60px rgba(255,0,51,0.2); transform: scale(1.02); }
+  .btn-cyber::after {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: linear-gradient(transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg); transition: 0.5s;
+  }
+  .btn-cyber:hover::after { left: 100%; }
+
+  .btn-outline { border: 1px solid rgba(255,0,51,0.5); color: #ff4444; transition: all 0.3s; }
+  .btn-outline:hover { background: rgba(255,0,51,0.1); border-color: #ff0033; box-shadow: 0 0 20px rgba(255,0,51,0.2); }
+
+  .btn-disabled { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.25); cursor: not-allowed; }
+
+  .stat-number { background: linear-gradient(135deg, #ff0033, #ff4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0a0f; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(#ff0033, #ff4444); border-radius: 3px; }
+
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 10000;
+    padding: 16px 24px; border-radius: 12px; background: rgba(13,13,21,0.95); border: 1px solid rgba(255,0,51,0.3);
+    backdrop-filter: blur(20px); transform: translateY(100px); opacity: 0;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  .lb-row { transition: all 0.3s; }
+  .lb-row:hover { background: rgba(255,0,51,0.05); }
+
+  .fade-section { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  .fade-section.visible { opacity: 1; transform: translateY(0); }
+
+  .raydium-badge { background: linear-gradient(135deg, rgba(255,0,51,0.15), rgba(0,240,255,0.08)); border: 1px solid rgba(255,0,51,0.3); }
+
+  /* Language toggle */
+  .lang-btn { transition: all 0.2s; }
+  .lang-btn.active { color: #ff4444; border-color: rgba(255,0,51,0.5); background: rgba(255,0,51,0.08); }
+  .lang-btn:not(.active) { color: #666; border-color: rgba(255,255,255,0.08); }
+  .lang-btn:not(.active):hover { color: #999; border-color: rgba(255,255,255,0.15); }
+</style>
+</head>
+<body class="scanlines grid-bg">
+
+<div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-50" style="background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,0,51,0.08);">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #ff0033, #ff4444);">
+        <span class="font-orbitron font-bold text-sm text-white">W</span>
+      </div>
+      <span class="font-orbitron font-bold text-lg tracking-wider" style="background: linear-gradient(135deg, #ff4444, #e0e0e0); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">WMT</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#about" class="text-sm text-gray-400 hover:text-neon-red transition-colors font-medium" data-i18n="nav_about">About</a>
+      <a href="#features" class="text-sm text-gray-400 hover:text-neon-red transition-colors font-medium" data-i18n="nav_features">Features</a>
+      <a href="#tokenomics" class="text-sm text-gray-400 hover:text-neon-red transition-colors font-medium" data-i18n="nav_tokenomics">Tokenomics</a>
+      <a href="#leaderboard" class="text-sm text-gray-400 hover:text-neon-red transition-colors font-medium" data-i18n="nav_ranking">Ranking</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <!-- Language toggle -->
+      <div class="flex items-center gap-1">
+        <button onclick="setLang('es')" id="langES" class="lang-btn active px-2 py-1 rounded text-xs font-mono font-bold border">ES</button>
+        <button onclick="setLang('en')" id="langEN" class="lang-btn px-2 py-1 rounded text-xs font-mono font-bold border">EN</button>
+      </div>
+      <div class="raydium-badge px-3 py-1 rounded-full flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-neon-red animate-pulse"></span>
+        <span class="text-xs font-mono text-neon-red font-medium">RAYDIUM</span>
+      </div>
+      <button onclick="showToast('🚀 Launching on Raydium soon!')" class="btn-cyber px-5 py-2 rounded-lg font-orbitron font-semibold text-sm text-white" data-i18n="nav_getWmt">GET WMT</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-16 px-6">
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-25" style="background: radial-gradient(circle, rgba(255,0,51,0.35) 0%, rgba(255,68,68,0.12) 35%, transparent 65%);"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+    <div class="radar-ring w-[350px] h-[350px]" style="animation-delay: 0s;"></div>
+    <div class="radar-ring w-[350px] h-[350px]" style="animation-delay: 1s;"></div>
+    <div class="radar-ring w-[350px] h-[350px]" style="animation-delay: 2s;"></div>
+  </div>
+
+  <div class="relative z-10 max-w-5xl mx-auto text-center">
+
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-10" style="background: rgba(255,0,51,0.06); border: 1px solid rgba(255,0,51,0.15);">
+      <span class="w-2 h-2 rounded-full bg-neon-yellow animate-pulse"></span>
+      <span class="text-xs font-mono text-neon-yellow tracking-widest" data-i18n="hero_badge">SEASON 1 — NOT STARTED YET</span>
+    </div>
+
+    <!-- LOGO -->
+    <div class="flex justify-center mb-8">
+      <div class="relative pulse-glow-red rounded-2xl" style="border: 2px solid rgba(255,0,51,0.2);">
+        <img src="logo.jpg" alt="WorldClick" class="w-72 md:w-96 lg:w-[440px] h-auto object-contain block">
+      </div>
+    </div>
+
+    <!-- Title -->
+    <h1 class="font-orbitron font-bold text-2xl md:text-3xl tracking-tight leading-none mb-3">
+      <span class="glitch" data-text="BOTÓN" style="background: linear-gradient(135deg, #ffffff, #999999); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" data-i18n-title="hero_title1">BOTÓN</span>
+      <span class="glitch" data-text=" MUNDIAL" style="background: linear-gradient(135deg, #ff0033, #ff4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" data-i18n-title="hero_title2"> MUNDIAL</span>
+    </h1>
+
+    <!-- Ticker -->
+    <div class="flex items-center justify-center gap-3 mb-8">
+      <span class="font-mono text-neon-red text-lg font-bold">$WMT</span>
+      <span class="text-gray-700">|</span>
+      <span class="text-gray-400 text-sm font-mono">SOLANA</span>
+      <span class="text-gray-700">|</span>
+      <span class="text-gray-400 text-sm font-mono">RAYDIUM LAUNCHPAD</span>
+    </div>
+
+    <!-- Description -->
+    <p class="text-base md:text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed mb-4" data-i18n="hero_desc">
+      El token que convierte cada clic en <span class="text-neon-red font-semibold">impacto global</span>. Impulsado por la fuerza colectiva de sus poseedores, <strong class="text-white">Botón Mundial (WMT)</strong> es un token utilitario descentralizado nacido de la visión de un ecosistema donde la competición global, la filantropía y la economía digital convergen en <span class="text-neon-cyan font-semibold">un solo clic</span>.
+    </p>
+
+    <p class="text-sm text-gray-500 max-w-2xl mx-auto mb-10" data-i18n="hero_tagline">Juega. Compite. Gana. Cada clic cambia el mundo. 🌍</p>
+
+    <!-- CTA -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <button disabled class="btn-disabled px-8 py-3.5 rounded-xl font-orbitron font-semibold text-base flex items-center gap-2">
+        <span class="iconify" data-icon="lucide:gamepad-2" data-width="20"></span>
+        <span data-i18n="hero_playBtn">PLAY — COMING SOON</span>
+      </button>
+      <button onclick="showToast('📄 Whitepaper loading...')" class="btn-outline px-8 py-3.5 rounded-xl font-orbitron font-semibold text-base flex items-center gap-2">
+        <span class="iconify" data-icon="lucide:file-text" data-width="20"></span>
+        <span data-i18n="hero_wpBtn">WHITEPAPER</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce z-10">
+    <span class="text-xs font-mono text-gray-600 tracking-widest" data-i18n="scroll">SCROLL</span>
+    <span class="iconify text-neon-red" data-icon="lucide:chevron-down" data-width="20"></span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="fade-section py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16">
+      <span class="font-mono text-xs text-neon-red tracking-[0.3em] uppercase mb-4 block" data-i18n="about_label">// THE MISSION</span>
+      <h2 class="font-orbitron font-bold text-3xl md:text-5xl text-white mb-6" data-i18n-html="about_title">UN CLICK.<br><span style="color: #ff0033;">IMPACTO MUNDIAL.</span></h2>
+      <p class="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed" data-i18n="about_desc">
+        Botón Mundial (WMT) es más que un token — es un movimiento. Un ecosistema descentralizado donde <strong class="text-white">la competición global, la filantropía y la economía digital</strong> convergen en un solo clic. Cada interacción suma puntos, cada temporada corona a una nación, cada juego cambia algo real en el mundo.
+      </p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="feature-card rounded-xl p-6 text-center">
+        <div class="stat-number font-orbitron font-bold text-3xl md:text-4xl mb-2">142</div>
+        <div class="text-sm text-gray-500 font-mono" data-i18n="stat_countries">PAÍSES</div>
+      </div>
+      <div class="feature-card rounded-xl p-6 text-center">
+        <div class="stat-number font-orbitron font-bold text-3xl md:text-4xl mb-2">15%</div>
+        <div class="text-sm text-gray-500 font-mono" data-i18n="stat_charity">CARIDAD</div>
+      </div>
+      <div class="feature-card rounded-xl p-6 text-center">
+        <div class="stat-number font-orbitron font-bold text-3xl md:text-4xl mb-2">∞</div>
+        <div class="text-sm text-gray-500 font-mono" data-i18n="stat_clicks">CLICKS</div>
+      </div>
+      <div class="feature-card rounded-xl p-6 text-center">
+        <div class="stat-number font-orbitron font-bold text-3xl md:text-4xl mb-2">WMT</div>
+        <div class="text-sm text-gray-500 font-mono">SOLANA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="fade-section py-24 px-6 relative">
+  <div class="absolute top-0 right-0 w-[500px] h-[500px] opacity-10" style="background: radial-gradient(circle, rgba(255,0,51,0.4), transparent 70%);"></div>
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-16">
+      <span class="font-mono text-xs text-neon-red tracking-[0.3em] uppercase mb-4 block" data-i18n="features_label">// CORE MECHANICS</span>
+      <h2 class="font-orbitron font-bold text-3xl md:text-5xl text-white" data-i18n="features_title">CÓMO FUNCIONA</h2>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <div class="feature-card rounded-xl p-8">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background: rgba(255,0,51,0.1); border: 1px solid rgba(255,0,51,0.2);">
+          <span class="iconify text-neon-red" data-icon="lucide:mouse-pointer-click" data-width="28"></span>
+        </div>
+        <h3 class="font-orbitron font-bold text-lg text-white mb-3" data-i18n="f1_title">JUEGA, COMPITE Y GANA</h3>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f1_desc">Cada clic suma puntos para tu marcador personal y para el ranking de tu país. Al final de cada temporada, la nación con más puntos se corona campeona, y un porcentaje del premio se destina a causas benéficas elegidas por los propios jugadores. Los mejores participantes del país ganador reciben recompensas en WMT, con un sistema escalonado que premia el esfuerzo y la constancia.</p>
+      </div>
+
+      <div class="feature-card rounded-xl p-8">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.2);">
+          <span class="iconify text-neon-cyan" data-icon="lucide:trophy" data-width="28"></span>
+        </div>
+        <h3 class="font-orbitron font-bold text-lg text-white mb-3" data-i18n="f2_title">TORNEOS SEMANALES</h3>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f2_desc">Además de la temporada global, los torneos opcionales ofrecen prize pools independientes. Inscríbete, compite y demuestra tu destreza. Cada torneo es una nueva oportunidad para llevarte una parte del premio y ascender en el ranking mundial.</p>
+      </div>
+
+      <div class="feature-card rounded-xl p-8">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background: rgba(57,255,20,0.1); border: 1px solid rgba(57,255,20,0.2);">
+          <span class="iconify text-neon-green" data-icon="lucide:flame" data-width="28"></span>
+        </div>
+        <h3 class="font-orbitron font-bold text-lg text-white mb-3" data-i18n="f3_title">ESFUERZO, NO AZAR</h3>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f3_desc">Tu éxito depende de tu dedicación: rachas diarias, multiplicadores de clics y cosméticos exclusivos que desbloqueas con tu actividad. WMT premia a quienes más contribuyen, creando una economía donde el esfuerzo tiene valor real.</p>
+      </div>
+
+      <div class="feature-card rounded-xl p-8">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background: rgba(255,230,0,0.1); border: 1px solid rgba(255,230,0,0.2);">
+          <span class="iconify text-neon-yellow" data-icon="lucide:heart-handshake" data-width="28"></span>
+        </div>
+        <h3 class="font-orbitron font-bold text-lg text-white mb-3" data-i18n="f4_title">IMPACTO SOCIAL REAL</h3>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f4_desc">El 15% del prize pool de cada temporada se destina a ONGs seleccionadas por los jugadores a través de un sistema de votación transparente. Jugar no solo te beneficia a ti, sino que también cambia el mundo.</p>
+      </div>
+
+      <div class="feature-card rounded-xl p-8 md:col-span-2 lg:col-span-1">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background: rgba(191,90,242,0.1); border: 1px solid rgba(191,90,242,0.2);">
+          <span class="iconify text-neon-purple" data-icon="lucide:trending-up" data-width="28"></span>
+        </div>
+        <h3 class="font-orbitron font-bold text-lg text-white mb-3" data-i18n="f5_title">TOKENOMICS DEFLACIONARIA</h3>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f5_desc">Con halving por temporada, quema de tokens en cada compra y un sistema de bonding curve que evita la acumulación excesiva, WMT está diseñado para crecer de forma sostenible y proteger el valor del esfuerzo de sus poseedores.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOKENOMICS -->
+<section id="tokenomics" class="fade-section py-24 px-6 relative">
+  <div class="absolute bottom-0 left-0 w-[600px] h-[600px] opacity-10" style="background: radial-gradient(circle, rgba(255,0,51,0.3), transparent 70%);"></div>
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-16">
+      <span class="font-mono text-xs text-neon-red tracking-[0.3em] uppercase mb-4 block" data-i18n="tok_label">// TOKEN DISTRIBUTION</span>
+      <h2 class="font-orbitron font-bold text-3xl md:text-5xl text-white" data-i18n="tok_title">TOKENOMICS</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="feature-card rounded-xl p-8">
+        <div class="relative w-64 h-64 mx-auto mb-8">
+          <div class="w-full h-full rounded-full" style="background: conic-gradient(#ff0033 0deg 144deg, #00f0ff 144deg 216deg, #39ff14 216deg 270deg, #bf5af2 270deg 324deg, #ffe600 324deg 360deg);"></div>
+          <div class="absolute inset-8 rounded-full bg-cyber-card flex items-center justify-center flex-col">
+            <span class="font-orbitron font-bold text-2xl text-white">1B</span>
+            <span class="font-mono text-xs text-gray-500" data-i18n="tok_supply">TOTAL SUPPLY</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-neon-red"></span><span class="text-sm text-gray-400" data-i18n="tok_c1">Community 40%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-neon-cyan"></span><span class="text-sm text-gray-400" data-i18n="tok_c2">Prize Pool 20%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-neon-green"></span><span class="text-sm text-gray-400" data-i18n="tok_c3">Charity 15%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-neon-purple"></span><span class="text-sm text-gray-400" data-i18n="tok_c4">Team 15%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-neon-yellow"></span><span class="text-sm text-gray-400" data-i18n="tok_c5">Liquidity 10%</span></div>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background: rgba(255,0,51,0.1);"><span class="iconify text-neon-red" data-icon="lucide:scissors" data-width="20"></span></div>
+          <div><h4 class="font-orbitron font-semibold text-white text-sm mb-1" data-i18n="tk1_title">HALVING POR TEMPORADA</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk1_desc">Las recompensas se reducen a la mitad cada temporada, creando escasez progresiva y protegiendo el valor a largo plazo.</p></div>
+        </div>
+        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background: rgba(255,0,51,0.1);"><span class="iconify text-neon-red" data-icon="lucide:flame" data-width="20"></span></div>
+          <div><h4 class="font-orbitron font-semibold text-white text-sm mb-1" data-i18n="tk2_title">QUEMA EN CADA COMPRA</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk2_desc">Un porcentaje de cada transacción se quema permanentemente, reduciendo el supply circulante de forma continua.</p></div>
+        </div>
+        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background: rgba(0,240,255,0.1);"><span class="iconify text-neon-cyan" data-icon="lucide:shield-check" data-width="20"></span></div>
+          <div><h4 class="font-orbitron font-semibold text-white text-sm mb-1" data-i18n="tk3_title">BONDING CURVE</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk3_desc">Sistema que evita la acumulación excesiva y garantiza un crecimiento orgánico y sostenible del token.</p></div>
+        </div>
+        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background: rgba(255,0,51,0.1);"><span class="iconify text-neon-red" data-icon="lucide:zap" data-width="20"></span></div>
+          <div><h4 class="font-orbitron font-semibold text-white text-sm mb-1" data-i18n="tk4_title">RAYDIUM LAUNCHPAD</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk4_desc">Lanzado en Raydium con liquidez inicial garantizada y fair distribution para la comunidad.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERBOARD -->
+<section id="leaderboard" class="fade-section py-24 px-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16">
+      <span class="font-mono text-xs text-neon-orange tracking-[0.3em] uppercase mb-4 block" data-i18n="lb_label">// GLOBAL RANKING</span>
+      <h2 class="font-orbitron font-bold text-3xl md:text-5xl text-white mb-4" data-i18n="lb_title">RANKING MUNDIAL</h2>
+      <p class="text-gray-500 text-sm" data-i18n="lb_sub">Season 1 — <span class="text-neon-yellow font-mono">NOT STARTED YET</span></p>
+    </div>
+    <div class="feature-card rounded-xl overflow-hidden">
+      <div class="grid grid-cols-12 gap-2 px-6 py-3 text-xs font-mono text-gray-600 uppercase tracking-wider" style="border-bottom: 1px solid rgba(255,0,51,0.1);">
+        <div class="col-span-1">#</div>
+        <div class="col-span-5" data-i18n="lb_country">Country</div>
+        <div class="col-span-3 text-right">Clicks</div>
+        <div class="col-span-3 text-right" data-i18n="lb_prize">WMT Prize</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom: 1px solid rgba(255,0,51,0.05);">
+        <div class="col-span-1 font-orbitron text-neon-yellow font-bold">1</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇧🇷</span><span class="text-white font-medium text-sm">Brazil</span></div>
+        <div class="col-span-3 text-right font-mono text-neon-red text-sm">4,281,042</div>
+        <div class="col-span-3 text-right font-mono text-neon-green text-sm">125,000</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom: 1px solid rgba(255,0,51,0.05);">
+        <div class="col-span-1 font-orbitron text-gray-400 font-bold">2</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇵🇭</span><span class="text-white font-medium text-sm">Philippines</span></div>
+        <div class="col-span-3 text-right font-mono text-neon-red text-sm">3,891,205</div>
+        <div class="col-span-3 text-right font-mono text-neon-green text-sm">95,000</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom: 1px solid rgba(255,0,51,0.05);">
+        <div class="col-span-1 font-orbitron text-orange-400 font-bold">3</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇮🇩</span><span class="text-white font-medium text-sm">Indonesia</span></div>
+        <div class="col-span-3 text-right font-mono text-neon-red text-sm">3,442,880</div>
+        <div class="col-span-3 text-right font-mono text-neon-green text-sm">72,000</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom: 1px solid rgba(255,0,51,0.05);">
+        <div class="col-span-1 font-orbitron text-gray-500 font-bold">4</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇪🇸</span><span class="text-white font-medium text-sm">Spain</span></div>
+        <div class="col-span-3 text-right font-mono text-neon-red text-sm">2,104,319</div>
+        <div class="col-span-3 text-right font-mono text-neon-green text-sm">48,000</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom: 1px solid rgba(255,0,51,0.05);">
+        <div class="col-span-1 font-orbitron text-gray-500 font-bold">5</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇦🇷</span><span class="text-white font-medium text-sm">Argentina</span></div>
+        <div class="col-span-3 text-right font-mono text-neon-red text-sm">1,987,654</div>
+        <div class="col-span-3 text-right font-mono text-neon-green text-sm">38,000</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center">
+        <div class="col-span-1 font-orbitron text-gray-500 font-bold">6</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇲🇽</span><span class="text-white font-medium text-sm">Mexico</span></div>
+        <div class="col-span-3 text-right font-mono text-neon-red text-sm">1,756,012</div>
+        <div class="col-span-3 text-right font-mono text-neon-green text-sm">29,000</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="fade-section py-24 px-6 relative">
+  <div class="absolute inset-0 opacity-20" style="background: radial-gradient(ellipse at center, rgba(255,0,51,0.3) 0%, rgba(0,240,255,0.1) 40%, transparent 70%);"></div>
+  <div class="max-w-4xl mx-auto relative z-10 text-center">
+    <h2 class="font-orbitron font-black text-4xl md:text-6xl text-white mb-4" data-i18n-html="cta_title">UN CLICK PUEDE<br><span style="background: linear-gradient(135deg, #ff0033, #ff4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">CAMBIARLO TODO.</span></h2>
+    <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto" data-i18n="cta_desc">Forma parte del movimiento. Juega, compite, gana y cambia el mundo — un clic a la vez.</p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+      <button onclick="showToast('🚀 Launching Raydium swap...')" class="btn-cyber px-10 py-4 rounded-xl font-orbitron font-bold text-lg text-white flex items-center gap-3">
+        <span class="iconify" data-icon="lucide:rocket" data-width="24"></span>
+        <span data-i18n="cta_getWmt">GET $WMT</span>
+      </button>
+      <button disabled class="btn-disabled px-10 py-4 rounded-xl font-orbitron font-semibold text-lg flex items-center gap-3">
+        <span class="iconify" data-icon="lucide:gamepad-2" data-width="24"></span>
+        <span data-i18n="cta_play">PLAY — COMING SOON</span>
+      </button>
+    </div>
+    <div class="flex items-center justify-center gap-4">
+      <a href="#" onclick="showToast('🐦 Twitter...')" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-neon-red/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:twitter" data-width="20"></span></a>
+      <a href="#" onclick="showToast('💬 Discord...')" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-neon-red/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:message-circle" data-width="20"></span></a>
+      <a href="#" onclick="showToast('📡 Telegram...')" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-neon-red/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:send" data-width="20"></span></a>
+      <a href="#" onclick="showToast('📄 Docs...')" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-neon-red/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:book-open" data-width="20"></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-12 px-6" style="border-top: 1px solid rgba(255,0,51,0.08);">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, #ff0033, #ff4444);"><span class="font-orbitron font-bold text-xs text-white">W</span></div>
+      <span class="font-mono text-xs text-gray-600" data-i18n="footer_copy">Botón Mundial (WMT) © 2025 — Solana Powered</span>
+    </div>
+    <div class="raydium-badge px-3 py-1 rounded-full flex items-center gap-1.5">
+      <span class="text-xs font-mono text-neon-red font-medium" data-i18n="footer_raydium">Launched on Raydium</span>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast" class="toast flex items-center gap-3"><span id="toastMsg" class="text-sm text-white font-medium"></span></div>
+
+<script>
+// ===============================
+// I18N — TRANSLATIONS
+// ===============================
+const T = {
+  es: {
+    nav_about: 'About',
+    nav_features: 'Features',
+    nav_tokenomics: 'Tokenomics',
+    nav_ranking: 'Ranking',
+    nav_getWmt: 'GET WMT',
+    hero_badge: 'SEASON 1 — NOT STARTED YET',
+    hero_title1: 'BOTÓN',
+    hero_title2: ' MUNDIAL',
+    hero_desc: 'El token que convierte cada clic en <span class="text-neon-red font-semibold">impacto global</span>. Impulsado por la fuerza colectiva de sus poseedores, <strong class="text-white">Botón Mundial (WMT)</strong> es un token utilitario descentralizado nacido de la visión de un ecosistema donde la competición global, la filantropía y la economía digital convergen en <span class="text-neon-cyan font-semibold">un solo clic</span>.',
+    hero_tagline: 'Juega. Compite. Gana. Cada clic cambia el mundo. 🌍',
+    hero_playBtn: 'PLAY — COMING SOON',
+    hero_wpBtn: 'WHITEPAPER',
+    scroll: 'SCROLL',
+    about_label: '// THE MISSION',
+    about_title: 'UN CLICK.<br><span style="color: #ff0033;">IMPACTO MUNDIAL.</span>',
+    about_desc: 'Botón Mundial (WMT) es más que un token — es un movimiento. Un ecosistema descentralizado donde <strong class="text-white">la competición global, la filantropía y la economía digital</strong> convergen en un solo clic. Cada interacción suma puntos, cada temporada corona a una nación, cada juego cambia algo real en el mundo.',
+    stat_countries: 'PAÍSES',
+    stat_charity: 'CARIDAD',
+    stat_clicks: 'CLICKS',
+    features_label: '// CORE MECHANICS',
+    features_title: 'CÓMO FUNCIONA',
+    f1_title: 'JUEGA, COMPITE Y GANA',
+    f1_desc: 'Cada clic suma puntos para tu marcador personal y para el ranking de tu país. Al final de cada temporada, la nación con más puntos se corona campeona, y un porcentaje del premio se destina a causas benéficas elegidas por los propios jugadores. Los mejores participantes del país ganador reciben recompensas en WMT, con un sistema escalonado que premia el esfuerzo y la constancia.',
+    f2_title: 'TORNEOS SEMANALES',
+    f2_desc: 'Además de la temporada global, los torneos opcionales ofrecen prize pools independientes. Inscríbete, compite y demuestra tu destreza. Cada torneo es una nueva oportunidad para llevarte una parte del premio y ascender en el ranking mundial.',
+    f3_title: 'ESFUERZO, NO AZAR',
+    f3_desc: 'Tu éxito depende de tu dedicación: rachas diarias, multiplicadores de clics y cosméticos exclusivos que desbloqueas con tu actividad. WMT premia a quienes más contribuyen, creando una economía donde el esfuerzo tiene valor real.',
+    f4_title: 'IMPACTO SOCIAL REAL',
+    f4_desc: 'El 15% del prize pool de cada temporada se destina a ONGs seleccionadas por los jugadores a través de un sistema de votación transparente. Jugar no solo te beneficia a ti, sino que también cambia el mundo.',
+    f5_title: 'TOKENOMICS DEFLACIONARIA',
+    f5_desc: 'Con halving por temporada, quema de tokens en cada compra y un sistema de bonding curve que evita la acumulación excesiva, WMT está diseñado para crecer de forma sostenible y proteger el valor del esfuerzo de sus poseedores.',
+    tok_label: '// TOKEN DISTRIBUTION',
+    tok_title: 'TOKENOMICS',
+    tok_supply: 'TOTAL SUPPLY',
+    tok_c1: 'Community 40%',
+    tok_c2: 'Prize Pool 20%',
+    tok_c3: 'Charity 15%',
+    tok_c4: 'Team 15%',
+    tok_c5: 'Liquidity 10%',
+    tk1_title: 'HALVING POR TEMPORADA',
+    tk1_desc: 'Las recompensas se reducen a la mitad cada temporada, creando escasez progresiva y protegiendo el valor a largo plazo.',
+    tk2_title: 'QUEMA EN CADA COMPRA',
+    tk2_desc: 'Un porcentaje de cada transacción se quema permanentemente, reduciendo el supply circulante de forma continua.',
+    tk3_title: 'BONDING CURVE',
+    tk3_desc: 'Sistema que evita la acumulación excesiva y garantiza un crecimiento orgánico y sostenible del token.',
+    tk4_title: 'RAYDIUM LAUNCHPAD',
+    tk4_desc: 'Lanzado en Raydium con liquidez inicial garantizada y fair distribution para la comunidad.',
+    lb_label: '// GLOBAL RANKING',
+    lb_title: 'RANKING MUNDIAL',
+    lb_sub: 'Season 1 — <span class="text-neon-yellow font-mono">NOT STARTED YET</span>',
+    lb_country: 'Country',
+    lb_prize: 'WMT Prize',
+    cta_title: 'UN CLICK PUEDE<br><span style="background: linear-gradient(135deg, #ff0033, #ff4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">CAMBIARLO TODO.</span>',
+    cta_desc: 'Forma parte del movimiento. Juega, compite, gana y cambia el mundo — un clic a la vez.',
+    cta_getWmt: 'GET $WMT',
+    cta_play: 'PLAY — COMING SOON',
+    footer_copy: 'Botón Mundial (WMT) © 2025 — Solana Powered',
+    footer_raydium: 'Launched on Raydium',
+  },
+  en: {
+    nav_about: 'About',
+    nav_features: 'Features',
+    nav_tokenomics: 'Tokenomics',
+    nav_ranking: 'Ranking',
+    nav_getWmt: 'GET WMT',
+    hero_badge: 'SEASON 1 — NOT STARTED YET',
+    hero_title1: 'WORLD',
+    hero_title2: ' CLICK',
+    hero_desc: 'The token that turns every click into <span class="text-neon-red font-semibold">global impact</span>. Powered by the collective force of its holders, <strong class="text-white">World Click (WMT)</strong> is a decentralized utility token born from the vision of an ecosystem where global competition, philanthropy, and the digital economy converge in <span class="text-neon-cyan font-semibold">a single click</span>.',
+    hero_tagline: 'Play. Compete. Win. Every click changes the world. 🌍',
+    hero_playBtn: 'PLAY — COMING SOON',
+    hero_wpBtn: 'WHITEPAPER',
+    scroll: 'SCROLL',
+    about_label: '// THE MISSION',
+    about_title: 'ONE CLICK.<br><span style="color: #ff0033;">GLOBAL IMPACT.</span>',
+    about_desc: 'World Click (WMT) is more than a token — it\'s a movement. A decentralized ecosystem where <strong class="text-white">global competition, philanthropy, and the digital economy</strong> converge in a single click. Every interaction adds points, every season crowns a nation, every game changes something real in the world.',
+    stat_countries: 'COUNTRIES',
+    stat_charity: 'CHARITY',
+    stat_clicks: 'CLICKS',
+    features_label: '// CORE MECHANICS',
+    features_title: 'HOW IT WORKS',
+    f1_title: 'PLAY, COMPETE & WIN',
+    f1_desc: 'Every click adds points to your personal score and your country\'s ranking. At the end of each season, the nation with the most points is crowned champion, and a percentage of the prize goes to charitable causes chosen by the players themselves. Top participants from the winning country receive WMT rewards through a tiered system that rewards effort and consistency.',
+    f2_title: 'WEEKLY TOURNAMENTS',
+    f2_desc: 'In addition to the global season, optional tournaments offer independent prize pools. Sign up, compete, and prove your skills. Each tournament is a new opportunity to claim part of the prize and climb the world ranking.',
+    f3_title: 'EFFORT, NOT LUCK',
+    f3_desc: 'Your success depends on your dedication: daily streaks, click multipliers, and exclusive cosmetics you unlock through activity. WMT rewards those who contribute the most, creating an economy where effort has real value.',
+    f4_title: 'REAL SOCIAL IMPACT',
+    f4_desc: '15% of each season\'s prize pool goes to NGOs selected by players through a transparent voting system. Playing doesn\'t just benefit you — it also changes the world.',
+    f5_title: 'DEFLATIONARY TOKENOMICS',
+    f5_desc: 'With per-season halving, token burns on every purchase, and a bonding curve system that prevents excessive accumulation, WMT is designed to grow sustainably and protect the value of holders\' effort.',
+    tok_label: '// TOKEN DISTRIBUTION',
+    tok_title: 'TOKENOMICS',
+    tok_supply: 'TOTAL SUPPLY',
+    tok_c1: 'Community 40%',
+    tok_c2: 'Prize Pool 20%',
+    tok_c3: 'Charity 15%',
+    tok_c4: 'Team 15%',
+    tok_c5: 'Liquidity 10%',
+    tk1_title: 'PER-SEASON HALVING',
+    tk1_desc: 'Rewards are cut in half each season, creating progressive scarcity and protecting long-term value.',
+    tk2_title: 'BURN ON EVERY BUY',
+    tk2_desc: 'A percentage of each transaction is permanently burned, continuously reducing the circulating supply.',
+    tk3_title: 'BONDING CURVE',
+    tk3_desc: 'A system that prevents excessive accumulation and guarantees organic, sustainable token growth.',
+    tk4_title: 'RAYDIUM LAUNCHPAD',
+    tk4_desc: 'Launched on Raydium with guaranteed initial liquidity and fair distribution for the community.',
+    lb_label: '// GLOBAL RANKING',
+    lb_title: 'WORLD RANKING',
+    lb_sub: 'Season 1 — <span class="text-neon-yellow font-mono">NOT STARTED YET</span>',
+    lb_country: 'Country',
+    lb_prize: 'WMT Prize',
+    cta_title: 'ONE CLICK CAN<br><span style="background: linear-gradient(135deg, #ff0033, #ff4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">CHANGE EVERYTHING.</span>',
+    cta_desc: 'Join the movement. Play, compete, win, and change the world — one click at a time.',
+    cta_getWmt: 'GET $WMT',
+    cta_play: 'PLAY — COMING SOON',
+    footer_copy: 'World Click (WMT) © 2025 — Solana Powered',
+    footer_raydium: 'Launched on Raydium',
+  }
+};
+
+let currentLang = 'es';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+
+  // Update toggle buttons
+  document.getElementById('langES').classList.toggle('active', lang === 'es');
+  document.getElementById('langEN').classList.toggle('active', lang === 'en');
+
+  // Update all data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (T[lang][key] !== undefined) {
+      el.innerHTML = T[lang][key];
+    }
+  });
+
+  // Update glitch titles (they use data-text attribute)
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.getAttribute('data-i18n-title');
+    if (T[lang][key] !== undefined) {
+      el.textContent = T[lang][key];
+      el.setAttribute('data-text', T[lang][key]);
+    }
+  });
+}
+
+// ===============================
+// TOAST
+// ===============================
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+  toastMsg.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ===============================
+// PARTICLES
+// ===============================
+(function() {
+  const container = document.getElementById('particles');
+  const colors = ['#ff0033', '#ff4444', '#00f0ff', '#39ff14'];
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const left = Math.random() * 100;
+    const dur = 8 + Math.random() * 12;
+    const delay = Math.random() * dur;
+    const drift = (Math.random() - 0.5) * 100;
+    p.style.cssText = `left:${left}%;bottom:-10px;background:${color};box-shadow:0 0 6px ${color};animation-duration:${dur}s;animation-delay:-${delay}s;--drift:${drift}px;`;
+    container.appendChild(p);
+  }
+})();
+
+// ===============================
+// SCROLL FADE-IN
+// ===============================
+const fadeSections = document.querySelectorAll('.fade-section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+fadeSections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
