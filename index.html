@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WMT — Botón Mundial</title>
+<title>CLICK — Botón Mundial</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,7 +39,7 @@
   .toast.show{transform:translateY(0);opacity:1}
   .lb-row{transition:all .3s}.lb-row:hover{background:rgba(255,0,51,.05)}
   .fade-section{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}.fade-section.visible{opacity:1;transform:translateY(0)}
-  .raydium-badge{background:linear-gradient(135deg,rgba(255,0,51,.15),rgba(0,240,255,.08));border:1px solid rgba(255,0,51,.3)}
+  .launchpad-badge{background:linear-gradient(135deg,rgba(255,0,51,.15),rgba(0,240,255,.08));border:1px solid rgba(255,0,51,.3)}
   .lang-btn{transition:all .2s}.lang-btn.active{color:#ff4444;border-color:rgba(255,0,51,.5);background:rgba(255,0,51,.08)}
   .lang-btn:not(.active){color:#666;border-color:rgba(255,255,255,.08)}.lang-btn:not(.active):hover{color:#999;border-color:rgba(255,255,255,.15)}
   .team-card{background:linear-gradient(135deg,rgba(13,13,21,.95),rgba(26,26,46,.7));border:1px solid rgba(255,0,51,.08);transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
@@ -59,13 +59,13 @@
       <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#ff0033,#ff4444)">
         <span class="font-bold text-sm text-white" style="font-family:'Orbitron',sans-serif">W</span>
       </div>
-      <span class="font-bold text-lg tracking-wider" style="font-family:'Orbitron',sans-serif;background:linear-gradient(135deg,#ff4444,#e0e0e0);-webkit-background-clip:text;-webkit-text-fill-color:transparent">WMT</span>
+      <span class="font-bold text-lg tracking-wider" style="font-family:'Orbitron',sans-serif;background:linear-gradient(135deg,#ff4444,#e0e0e0);-webkit-background-clip:text;-webkit-text-fill-color:transparent">CLICK</span>
     </div>
     <div class="hidden md:flex items-center gap-8">
-      <a href="#about" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_about">About</a>
-      <a href="#features" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_features">Features</a>
+      <a href="#about" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_about">Sobre</a>
+      <a href="#features" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_features">Funciones</a>
       <a href="#tokenomics" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_tokenomics">Tokenomics</a>
-      <a href="#team" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_team">Team</a>
+      <a href="#team" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_team">Equipo</a>
       <a href="#leaderboard" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_ranking">Ranking</a>
     </div>
    <div class="flex items-center gap-1 flex-wrap justify-end max-w-[50%]">
@@ -78,11 +78,11 @@
       <button onclick="setLang('ja')" id="langJA" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="JA">🇯🇵</button>
       <button onclick="setLang('ko')" id="langKO" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="KO">🇰🇷</button>
       <button onclick="setLang('hi')" id="langHI" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="HI">🇮🇳</button>
-      <div class="raydium-badge px-3 py-1 rounded-full flex items-center gap-1.5 ml-2">
+      <div class="launchpad-badge px-3 py-1 rounded-full flex items-center gap-1.5 ml-2">
         <span class="w-2 h-2 rounded-full bg-[#ff0033] animate-pulse"></span>
-        <span class="text-xs font-mono text-[#ff0033] font-medium">RAYDIUM</span>
+        <span class="text-xs font-mono text-[#ff0033] font-medium">STONKFUN</span>
       </div>
-      <button onclick="showToast(currentT.toast_launch||'Coming soon')" class="btn-cyber px-5 py-2 rounded-lg font-bold text-sm text-white ml-2" style="font-family:'Orbitron',sans-serif" data-i18n="nav_getWmt">GET WMT</button>
+      <button onclick="showToast(currentT.toast_launch||'Coming soon')" class="btn-cyber px-5 py-2 rounded-lg font-bold text-sm text-white ml-2" style="font-family:'Orbitron',sans-serif" data-i18n="nav_getClick">CONSEGUIR CLICK</button>
 </div>
   </div>
 </nav>
@@ -110,18 +110,18 @@
       <span class="glitch" data-text=" MUNDIAL" style="background:linear-gradient(135deg,#ff0033,#ff4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent" data-i18n-title="hero_title2"> MUNDIAL</span>
     </h1>
     <div class="flex items-center justify-center gap-3 mb-8">
-      <span class="font-mono text-[#ff0033] text-lg font-bold">$WMT</span><span class="text-gray-700">|</span>
+      <span class="font-mono text-[#ff0033] text-lg font-bold">$CLICK</span><span class="text-gray-700">|</span>
       <span class="text-gray-400 text-sm font-mono">SOLANA</span><span class="text-gray-700">|</span>
-      <span class="text-gray-400 text-sm font-mono">RAYDIUM LAUNCHPAD</span>
+      <span class="text-gray-400 text-sm font-mono">STONKFUN</span>
     </div>
-    <p class="text-base md:text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed mb-4" data-i18n="hero_desc">El token que convierte cada clic en <span class="text-[#ff0033] font-semibold">impacto global</span>...</p>
+    <p class="text-base md:text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed mb-4" data-i18n="hero_desc">El token que convierte cada clic en <span class="text-[#ff0033] font-semibold">impacto global</span>. Impulsado por la fuerza colectiva de sus poseedores, <strong class="text-white">Botón Mundial (CLICK)</strong> es un token utilitario descentralizado nacido de la visión de un ecosistema donde la competición global, la filantropía y la economía digital convergen en <span class="text-[#00f0ff] font-semibold">un solo clic</span>.</p>
     <p class="text-sm text-gray-500 max-w-2xl mx-auto mb-10" data-i18n="hero_tagline">Juega. Compite. Gana. Cada clic cambia el mundo. 🌍</p>
     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
       <button disabled class="btn-disabled px-8 py-3.5 rounded-xl font-bold text-base flex items-center gap-2" style="font-family:'Orbitron',sans-serif">
         <span class="iconify" data-icon="lucide:gamepad-2" data-width="20"></span>
-        <span data-i18n="hero_playBtn">PLAY — COMING SOON</span>
+        <span data-i18n="hero_playBtn">JUGAR — PRÓXIMAMENTE</span>
       </button>
-      <a href="Whitepaper%20%E2%80%94%20World%20Button%20(WMT).pdf" target="_blank" class="btn-outline px-8 py-3.5 rounded-xl font-bold text-base flex items-center gap-2" style="font-family:'Orbitron',sans-serif">
+      <a href="whitepaper-click-v2.4.pdf" target="_blank" class="btn-outline px-8 py-3.5 rounded-xl font-bold text-base flex items-center gap-2" style="font-family:'Orbitron',sans-serif">
         <span class="iconify" data-icon="lucide:file-text" data-width="20"></span>
         <span data-i18n="hero_wpBtn">WHITEPAPER</span>
       </a>
@@ -137,9 +137,9 @@
 <section id="about" class="fade-section py-24 px-6">
   <div class="max-w-6xl mx-auto">
     <div class="text-center mb-16">
-      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="about_label">// THE MISSION</span>
+      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="about_label">// LA MISIÓN</span>
       <h2 class="font-bold text-3xl md:text-5xl text-white mb-6" style="font-family:'Orbitron',sans-serif" data-i18n-html="about_title">UN CLICK.<br><span style="color:#ff0033">IMPACTO MUNDIAL.</span></h2>
-      <p class="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed" data-i18n="about_desc">Botón Mundial (WMT) es más que un token...</p>
+      <p class="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed" data-i18n="about_desc">Botón Mundial (CLICK) es más que un token — es un movimiento. Un ecosistema descentralizado donde <strong class="text-white">la competición global, la filantropía y la economía digital</strong> convergen en un solo clic. Cada interacción suma puntos, cada temporada corona a una nación, cada juego cambia algo real en el mundo.</p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <div class="feature-card rounded-xl p-6 text-center">
@@ -147,15 +147,15 @@
         <div class="text-sm text-gray-500 font-mono" data-i18n="stat_countries">PAÍSES</div>
       </div>
       <div class="feature-card rounded-xl p-6 text-center">
-        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">15%</div>
-        <div class="text-sm text-gray-500 font-mono" data-i18n="stat_charity">CARIDAD</div>
+        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">10%</div>
+        <div class="text-sm text-gray-500 font-mono" data-i18n="stat_charity">IMPACTO</div>
       </div>
       <div class="feature-card rounded-xl p-6 text-center">
         <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">∞</div>
         <div class="text-sm text-gray-500 font-mono" data-i18n="stat_clicks">CLICKS</div>
       </div>
       <div class="feature-card rounded-xl p-6 text-center">
-        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">WMT</div>
+        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">CLICK</div>
         <div class="text-sm text-gray-500 font-mono">SOLANA</div>
       </div>
     </div>
@@ -167,34 +167,34 @@
   <div class="absolute top-0 right-0 w-[500px] h-[500px] opacity-10" style="background:radial-gradient(circle,rgba(255,0,51,.4),transparent 70%)"></div>
   <div class="max-w-6xl mx-auto relative z-10">
     <div class="text-center mb-16">
-      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="features_label">// CORE MECHANICS</span>
+      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="features_label">// MECÁNICAS PRINCIPALES</span>
       <h2 class="font-bold text-3xl md:text-5xl text-white" style="font-family:'Orbitron',sans-serif" data-i18n="features_title">CÓMO FUNCIONA</h2>
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div class="feature-card rounded-xl p-8">
         <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(255,0,51,.1);border:1px solid rgba(255,0,51,.2)"><span class="iconify text-[#ff0033]" data-icon="lucide:mouse-pointer-click" data-width="28"></span></div>
         <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f1_title">JUEGA, COMPITE Y GANA</h3>
-        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f1_desc">Cada clic suma puntos...</p>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f1_desc">Cada clic suma puntos para tu marcador personal y para el ranking de tu país. Al final de cada temporada, la nación con más puntos se corona campeona. Los ganadores de los torneos comparten prize pools definidos en las reglas publicadas, y una parte definida apoya a una organización benéfica del país ganador — seleccionada por votación DAO y ejecutada por smart contract.</p>
       </div>
       <div class="feature-card rounded-xl p-8">
         <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(0,240,255,.1);border:1px solid rgba(0,240,255,.2)"><span class="iconify text-[#00f0ff]" data-icon="lucide:trophy" data-width="28"></span></div>
         <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f2_title">TORNEOS SEMANALES</h3>
-        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f2_desc">Además de la temporada global...</p>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f2_desc">Además de la temporada global, los torneos opcionales ofrecen prize pools independientes. Inscríbete, compite y demuestra tu destreza. Cada torneio es una nueva oportunidad para llevarte una parte del premio y ascender en el ranking mundial.</p>
       </div>
       <div class="feature-card rounded-xl p-8">
         <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.2)"><span class="iconify text-[#39ff14]" data-icon="lucide:flame" data-width="28"></span></div>
         <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f3_title">ESFUERZO, NO AZAR</h3>
-        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f3_desc">Tu éxito depende de tu dedicación...</p>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f3_desc">Tu éxito depende de tu dedicación: rachas diarias, multiplicadores de clics y cosméticos exclusivos que desbloqueas con tu actividad. CLICK premia a quienes más contribuyen, creando una economía donde el esfuerzo tiene valor real.</p>
       </div>
       <div class="feature-card rounded-xl p-8">
         <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.2)"><span class="iconify text-[#ffe600]" data-icon="lucide:heart-handshake" data-width="28"></span></div>
         <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f4_title">IMPACTO SOCIAL REAL</h3>
-        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f4_desc">El 15% del prize pool...</p>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f4_desc">Una parte definida de los prize pools de torneos seleccionados se destina a una organización benéfica del país ganador — elegida por la comunidad mediante votación DAO y ejecutada on-chain por smart contract. Jugar no solo te beneficia a ti, sino que también cambia el mundo.</p>
       </div>
       <div class="feature-card rounded-xl p-8 md:col-span-2 lg:col-span-1">
         <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(191,90,242,.1);border:1px solid rgba(191,90,242,.2)"><span class="iconify text-[#bf5af2]" data-icon="lucide:trending-up" data-width="28"></span></div>
-        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f5_title">TOKENOMICS DEFLACIONARIA</h3>
-        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f5_desc">Con halving por temporada...</p>
+        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f5_title">TOKENOMICS SOSTENIBLE</h3>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f5_desc">Suministro máximo fijo de 1.000.000.000 de CLICK con asignaciones transparentes. Una tesorería financiada por ingresos reales — sin preventa, sin impuestos permanentes de transferencia, sin segundo token.</p>
       </div>
     </div>
   </div>
@@ -205,42 +205,43 @@
   <div class="absolute bottom-0 left-0 w-[600px] h-[600px] opacity-10" style="background:radial-gradient(circle,rgba(255,0,51,.3),transparent 70%)"></div>
   <div class="max-w-6xl mx-auto relative z-10">
     <div class="text-center mb-16">
-      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="tok_label">// TOKEN DISTRIBUTION</span>
+      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="tok_label">// DISTRIBUCIÓN DEL TOKEN</span>
       <h2 class="font-bold text-3xl md:text-5xl text-white" style="font-family:'Orbitron',sans-serif" data-i18n="tok_title">TOKENOMICS</h2>
     </div>
     <div class="grid md:grid-cols-2 gap-8 items-center">
       <div class="feature-card rounded-xl p-8">
         <div class="relative w-64 h-64 mx-auto mb-8">
-          <div class="w-full h-full rounded-full" style="background:conic-gradient(#ff0033 0deg 144deg,#00f0ff 144deg 216deg,#39ff14 216deg 270deg,#bf5af2 270deg 324deg,#ffe600 324deg 360deg)"></div>
+          <div class="w-full h-full rounded-full" style="background:conic-gradient(#ff0033 0deg 198deg,#00f0ff 198deg 234deg,#39ff14 234deg 270deg,#bf5af2 270deg 306deg,#ffe600 306deg 342deg,#ff6b35 342deg 360deg)"></div>
           <div class="absolute inset-8 rounded-full bg-[#0d0d15] flex items-center justify-center flex-col">
             <span class="font-bold text-2xl text-white" style="font-family:'Orbitron',sans-serif">1B</span>
-            <span class="font-mono text-xs text-gray-500" data-i18n="tok_supply">TOTAL SUPPLY</span>
+            <span class="font-mono text-xs text-gray-500" data-i18n="tok_supply">SUPPLY TOTAL</span>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-3">
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#ff0033]"></span><span class="text-sm text-gray-400" data-i18n="tok_c1">Community 40%</span></div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#00f0ff]"></span><span class="text-sm text-gray-400" data-i18n="tok_c2">Prize Pool 20%</span></div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#39ff14]"></span><span class="text-sm text-gray-400" data-i18n="tok_c3">Charity 15%</span></div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#bf5af2]"></span><span class="text-sm text-gray-400" data-i18n="tok_c4">Team 15%</span></div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#ffe600]"></span><span class="text-sm text-gray-400" data-i18n="tok_c5">Liquidity 10%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#ff0033]"></span><span class="text-sm text-gray-400" data-i18n="tok_c1">Mercado y Liquidez 55%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#00f0ff]"></span><span class="text-sm text-gray-400" data-i18n="tok_c2">Tesorería y Desarrollo 10%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#39ff14]"></span><span class="text-sm text-gray-400" data-i18n="tok_c3">Equipo 10%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#bf5af2]"></span><span class="text-sm text-gray-400" data-i18n="tok_c4">Comunidad y Ecosistema 10%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#ffe600]"></span><span class="text-sm text-gray-400" data-i18n="tok_c5">Impacto y Filantropía 10%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#ff6b35]"></span><span class="text-sm text-gray-400" data-i18n="tok_c6">Reserva Estratégica 5%</span></div>
         </div>
       </div>
       <div class="space-y-6">
         <div class="feature-card rounded-xl p-6 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:scissors" data-width="20"></span></div>
-          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk1_title">HALVING POR TEMPORADA</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk1_desc">Las recompensas se reducen...</p></div>
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:rocket" data-width="20"></span></div>
+          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk1_title">MODO STONKFUN STANDARD</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk1_desc">Un lanzamiento abierto en StonkFun con descubrimiento de precio basado en el mercado. Sin preventa, sin ICO.</p></div>
         </div>
         <div class="feature-card rounded-xl p-6 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:flame" data-width="20"></span></div>
-          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk2_title">QUEMA EN CADA COMPRA</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk2_desc">Un porcentaje de cada transacción...</p></div>
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:lock" data-width="20"></span></div>
+          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk2_title">VESTING DEL EQUIPO — 36 MESES</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk2_desc">Los tokens del equipo se liberan en 36 meses con 12 meses de cliff y desbloqueo lineal mensual, alineando los incentivos a largo plazo con el proyecto.</p></div>
         </div>
         <div class="feature-card rounded-xl p-6 flex items-start gap-4">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(0,240,255,.1)"><span class="iconify text-[#00f0ff]" data-icon="lucide:shield-check" data-width="20"></span></div>
-          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk3_title">BONDING CURVE</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk3_desc">Sistema que evita la acumulación...</p></div>
+          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk3_title">SIN IMPUESTO PERMANENTE DE TRANSFERENCIA</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk3_desc">El proyecto no usa Reward Mode ni financia al equipo mediante un impuesto permanente sobre las transacciones de los holders.</p></div>
         </div>
         <div class="feature-card rounded-xl p-6 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:zap" data-width="20"></span></div>
-          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk4_title">RAYDIUM LAUNCHPAD</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk4_desc">Lanzado en Raydium...</p></div>
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:trending-up" data-width="20"></span></div>
+          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk4_title">TESORERÍA DE INGRESOS REALES</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk4_desc">Solo los ingresos realmente recibidos — comisiones de creador cuando se generan, actividad del marketplace, patrocinios — financian desarrollo, competiciones e impacto.</p></div>
         </div>
       </div>
     </div>
@@ -252,8 +253,8 @@
   <div class="absolute top-1/2 left-0 w-[600px] h-[600px] -translate-y-1/2 opacity-5" style="background:radial-gradient(circle,rgba(255,0,51,.4),transparent 70%)"></div>
   <div class="max-w-6xl mx-auto relative z-10">
     <div class="text-center mb-16">
-      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="team_label">// THE TEAM</span>
-      <h2 class="font-bold text-3xl md:text-5xl text-white mb-4" style="font-family:'Orbitron',sans-serif" data-i18n="team_title">EQUIPA WMT</h2>
+      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="team_label">// EL EQUIPO</span>
+      <h2 class="font-bold text-3xl md:text-5xl text-white mb-4" style="font-family:'Orbitron',sans-serif" data-i18n="team_title">EQUIPO CLICK</h2>
       <p class="text-gray-400 text-lg max-w-2xl mx-auto" data-i18n="team_subtitle">Los que hacen que pase. Cuatro inadaptados reescribiendo las reglas, un clic a la vez.</p>
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -265,7 +266,7 @@
         </div>
         <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Marco</h3>
         <span class="text-xs font-mono text-[#ff0033] uppercase tracking-wider mb-3 block" data-i18n="team_marco_role">Hacker de Sueños</span>
-        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_marco_desc">Fundador. El arquitecto loco detrás de la visión...</p>
+        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_marco_desc">Fundador. El arquitecto loco detrás de la visión. Convierte cafeína en roadmaps y caos en protocolo. Cree que un clic puede reescribir el mundo.</p>
       </div>
       <div class="team-card rounded-xl p-6 text-center">
         <div class="relative w-24 h-24 mx-auto mb-4">
@@ -275,7 +276,7 @@
         </div>
         <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Gustavo</h3>
         <span class="text-xs font-mono text-[#00f0ff] uppercase tracking-wider mb-3 block" data-i18n="team_gustavo_role">Susurrador de Protocolos</span>
-        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_gustavo_desc">Cofundador. Creativo incorregible...</p>
+        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_gustavo_desc">Cofundador. Creativo incorregible. El puente entre ideas locas y reglas del mundo real. Habla fluido mientras mantiene viva la emoción de la comunidad. Se asegura de que juguemos duro pero justo.</p>
       </div>
       <div class="team-card rounded-xl p-6 text-center">
         <div class="relative w-24 h-24 mx-auto mb-4">
@@ -285,7 +286,7 @@
         </div>
         <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Enrique</h3>
         <span class="text-xs font-mono text-[#bf5af2] uppercase tracking-wider mb-3 block" data-i18n="team_enrique_role">Corredor de Sombras</span>
-        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_enrique_desc">La mano invisible detrás de cada trato cerrado...</p>
+        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_enrique_desc">La mano invisible detrás de cada trato cerrado. Infiltra instituciones, lee la sala antes de que alguien hable, y convierte contactos fríos en alianzas cálidas. Un camaleón comercial con instintos incorruptibles.</p>
       </div>
       <div class="team-card rounded-xl p-6 text-center">
         <div class="relative w-24 h-24 mx-auto mb-4">
@@ -295,7 +296,7 @@
         </div>
         <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Luis</h3>
         <span class="text-xs font-mono text-[#39ff14] uppercase tracking-wider mb-3 block" data-i18n="team_luis_role">Comodín</span>
-        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_luis_desc">La navaja suiza en persona...</p>
+        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_luis_desc">La navaja suiza en persona. Un día programando, al siguiente negociando con proveedores, y el viernes rediseñando la web. Ningún problema demasiado raro, ninguna tarea demasiado aleatoria. Si existe, él puede hacerlo.</p>
       </div>
     </div>
   </div>
@@ -305,13 +306,13 @@
 <section id="leaderboard" class="fade-section py-24 px-6">
   <div class="max-w-4xl mx-auto">
     <div class="text-center mb-16">
-      <span class="font-mono text-xs text-[#ff6b35] tracking-[0.3em] uppercase mb-4 block" data-i18n="lb_label">// GLOBAL RANKING</span>
+      <span class="font-mono text-xs text-[#ff6b35] tracking-[0.3em] uppercase mb-4 block" data-i18n="lb_label">// RANKING GLOBAL</span>
       <h2 class="font-bold text-3xl md:text-5xl text-white mb-4" style="font-family:'Orbitron',sans-serif" data-i18n="lb_title">RANKING MUNDIAL</h2>
       <p class="text-gray-500 text-sm" data-i18n="lb_sub">Season 1 — <span class="text-[#ffe600] font-mono">NOT STARTED YET</span></p>
     </div>
     <div class="feature-card rounded-xl overflow-hidden">
       <div class="grid grid-cols-12 gap-2 px-6 py-3 text-xs font-mono text-gray-600 uppercase tracking-wider" style="border-bottom:1px solid rgba(255,0,51,.1)">
-        <div class="col-span-1">#</div><div class="col-span-5" data-i18n="lb_country">Country</div><div class="col-span-3 text-right">Clicks</div><div class="col-span-3 text-right" data-i18n="lb_prize">WMT Prize</div>
+        <div class="col-span-1">#</div><div class="col-span-5" data-i18n="lb_country">País</div><div class="col-span-3 text-right">Clicks</div><div class="col-span-3 text-right" data-i18n="lb_prize">Premio CLICK</div>
       </div>
       <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom:1px solid rgba(255,0,51,.05)">
         <div class="col-span-1 font-bold text-[#ffe600]" style="font-family:'Orbitron',sans-serif">1</div>
@@ -352,20 +353,20 @@
   <div class="absolute inset-0 opacity-20" style="background:radial-gradient(ellipse at center,rgba(255,0,51,.3) 0%,rgba(0,240,255,.1) 40%,transparent 70%)"></div>
   <div class="max-w-4xl mx-auto relative z-10 text-center">
     <h2 class="font-black text-4xl md:text-6xl text-white mb-4" style="font-family:'Orbitron',sans-serif" data-i18n-html="cta_title">UN CLICK PUEDE<br><span style="background:linear-gradient(135deg,#ff0033,#ff4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent">CAMBIARLO TODO.</span></h2>
-    <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto" data-i18n="cta_desc">Forma parte del movimiento...</p>
+    <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto" data-i18n="cta_desc">Forma parte del movimiento. Juega, compite, gana y cambia el mundo — un clic a la vez.</p>
     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
       <button onclick="showToast(currentT.toast_launch||'Coming soon')" class="btn-cyber px-10 py-4 rounded-xl font-bold text-lg text-white flex items-center gap-3" style="font-family:'Orbitron',sans-serif">
-        <span class="iconify" data-icon="lucide:rocket" data-width="24"></span><span data-i18n="cta_getWmt">GET $WMT</span>
+        <span class="iconify" data-icon="lucide:rocket" data-width="24"></span><span data-i18n="cta_getClick">CONSEGUIR $CLICK</span>
       </button>
       <button disabled class="btn-disabled px-10 py-4 rounded-xl font-semibold text-lg flex items-center gap-3" style="font-family:'Orbitron',sans-serif">
-        <span class="iconify" data-icon="lucide:gamepad-2" data-width="24"></span><span data-i18n="cta_play">PLAY — COMING SOON</span>
+        <span class="iconify" data-icon="lucide:gamepad-2" data-width="24"></span><span data-i18n="cta_play">JUGAR — PRÓXIMAMENTE</span>
       </button>
     </div>
     <div class="flex items-center justify-center gap-4">
       <a href="#" onclick="showToast('Twitter');return false" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:twitter" data-width="20"></span></a>
       <a href="#" onclick="showToast('Discord');return false" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:message-circle" data-width="20"></span></a>
       <a href="#" onclick="showToast('Telegram');return false" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:send" data-width="20"></span></a>
-      <a href="Whitepaper%20%E2%80%94%20World%20Button%20(WMT).pdf" target="_blank" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:book-open" data-width="20"></span></a>
+      <a href="whitepaper-click-v2.4.pdf" target="_blank" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:book-open" data-width="20"></span></a>
     </div>
   </div>
 </section>
@@ -374,10 +375,10 @@
   <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
     <div class="flex items-center gap-3">
       <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#ff0033,#ff4444)"><span class="font-bold text-xs text-white" style="font-family:'Orbitron',sans-serif">W</span></div>
-      <span class="font-mono text-xs text-gray-600" data-i18n="footer_copy">Botón Mundial (WMT) © 2025 — Solana Powered</span>
+      <span class="font-mono text-xs text-gray-600" data-i18n="footer_copy">Botón Mundial (CLICK) © 2026 — Impulsado por Solana</span>
     </div>
-    <div class="raydium-badge px-3 py-1 rounded-full flex items-center gap-1.5">
-      <span class="text-xs font-mono text-[#ff0033] font-medium" data-i18n="footer_raydium">Launched on Raydium</span>
+    <div class="launchpad-badge px-3 py-1 rounded-full flex items-center gap-1.5">
+      <span class="text-xs font-mono text-[#ff0033] font-medium" data-i18n="footer_launchpad">Lanzamiento en StonkFun</span>
     </div>
   </div>
 </footer>
@@ -414,6 +415,10 @@ async function setLang(lang) {
       el.textContent = currentT[key];
       el.setAttribute('data-text', currentT[key]);
     }
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (currentT[key] !== undefined) el.innerHTML = currentT[key];
   });
 }
 
