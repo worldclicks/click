@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLICK — Botón Mundial</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--neon-red:#ff0033;--neon-cyan:#00f0ff;--neon-green:#39ff14;--neon-purple:#bf5af2;--neon-yellow:#ffe600;--bg:#0a0a0f;--card:#0d0d15}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:#e0e0e0;font-family:'Inter',sans-serif;overflow-x:hidden}
+  .scan-lines::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:9999}
+  .grid-bg{background-image:linear-gradient(rgba(255,0,51,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,51,.03) 1px,transparent 1px);background-size:40px 40px}
+  .glitch{position:relative}.glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;width:100%;height:100%}
+  .glitch::before{animation:glitch1 3s infinite;color:#ff0033;z-index:-1}.glitch::after{animation:glitch2 3s infinite;color:#00f0ff;z-index:-2}
+  @keyframes glitch1{0%,95%,100%{transform:translate(0)}96%{transform:translate(-3px,2px)}97%{transform:translate(3px,-1px)}}
+  @keyframes glitch2{0%,95%,100%{transform:translate(0)}96%{transform:translate(3px,-2px)}97%{transform:translate(-3px,1px)}}
+  .pulse-glow-red{animation:pulseGlowRed 2s ease-in-out infinite alternate}
+  @keyframes pulseGlowRed{from{box-shadow:0 0 20px rgba(255,0,51,.3),0 0 40px rgba(255,0,51,.1)}to{box-shadow:0 0 35px rgba(255,0,51,.5),0 0 70px rgba(255,0,51,.2),0 0 100px rgba(255,0,51,.1)}}
+  .particle{position:absolute;width:2px;height:2px;border-radius:50%;animation:floatUp linear infinite}
+  @keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-100vh) translateX(var(--drift));opacity:0}}
+  .radar-ring{position:absolute;border-radius:50%;border:1px solid rgba(255,0,51,.12);animation:radarPulse 3s ease-out infinite}
+  @keyframes radarPulse{0%{transform:scale(.8);opacity:.6}100%{transform:scale(2.5);opacity:0}}
+  .feature-card{background:linear-gradient(135deg,rgba(13,13,21,.9),rgba(26,26,46,.6));border:1px solid rgba(255,0,51,.1);transition:all .4s cubic-bezier(.25,.46,.45,.94);backdrop-filter:blur(20px)}
+  .feature-card:hover{border-color:rgba(255,0,51,.4);box-shadow:0 0 30px rgba(255,0,51,.12),inset 0 0 30px rgba(255,0,51,.04);transform:translateY(-4px)}
+  .btn-cyber{position:relative;overflow:hidden;background:linear-gradient(135deg,#ff0033,#ff4444);transition:all .3s}
+  .btn-cyber:hover{box-shadow:0 0 30px rgba(255,0,51,.4),0 0 60px rgba(255,0,51,.2);transform:scale(1.02)}
+  .btn-cyber::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(transparent,rgba(255,255,255,.1),transparent);transform:rotate(45deg);transition:.5s}
+  .btn-cyber:hover::after{left:100%}
+  .btn-outline{border:1px solid rgba(255,0,51,.5);color:#ff4444;transition:all .3s}
+  .btn-outline:hover{background:rgba(255,0,51,.1);border-color:#ff0033;box-shadow:0 0 20px rgba(255,0,51,.2)}
+  .btn-disabled{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.25);cursor:not-allowed}
+  .stat-number{background:linear-gradient(135deg,#ff0033,#ff4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .toast{position:fixed;bottom:24px;right:24px;z-index:10000;padding:16px 24px;border-radius:12px;background:rgba(13,13,21,.95);border:1px solid rgba(255,0,51,.3);backdrop-filter:blur(20px);transform:translateY(100px);opacity:0;transition:all .4s cubic-bezier(.16,1,.3,1)}
+  .toast.show{transform:translateY(0);opacity:1}
+  .lb-row{transition:all .3s}.lb-row:hover{background:rgba(255,0,51,.05)}
+  .fade-section{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}.fade-section.visible{opacity:1;transform:translateY(0)}
+  .launchpad-badge{background:linear-gradient(135deg,rgba(255,0,51,.15),rgba(0,240,255,.08));border:1px solid rgba(255,0,51,.3)}
+  .lang-btn{transition:all .2s}.lang-btn.active{color:#ff4444;border-color:rgba(255,0,51,.5);background:rgba(255,0,51,.08)}
+  .lang-btn:not(.active){color:#666;border-color:rgba(255,255,255,.08)}.lang-btn:not(.active):hover{color:#999;border-color:rgba(255,255,255,.15)}
+  .team-card{background:linear-gradient(135deg,rgba(13,13,21,.95),rgba(26,26,46,.7));border:1px solid rgba(255,0,51,.08);transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
+  .team-card:hover{border-color:rgba(255,0,51,.35);transform:translateY(-6px);box-shadow:0 20px 40px rgba(255,0,51,.1)}
+  .team-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff0033,transparent);opacity:0;transition:opacity .4s}.team-card:hover::before{opacity:1}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0a0a0f}::-webkit-scrollbar-thumb{background:linear-gradient(#ff0033,#ff4444);border-radius:3px}
+  [dir="rtl"] .font-orbitron{letter-spacing:0}
+</style>
+</head>
+<body class="scan-lines grid-bg">
+
+<div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
+
+<nav class="fixed top-0 left-0 right-0 z-50" style="background:rgba(10,10,15,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,0,51,.08)">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#ff0033,#ff4444)">
+        <span class="font-bold text-sm text-white" style="font-family:'Orbitron',sans-serif">W</span>
+      </div>
+      <span class="font-bold text-lg tracking-wider" style="font-family:'Orbitron',sans-serif;background:linear-gradient(135deg,#ff4444,#e0e0e0);-webkit-background-clip:text;-webkit-text-fill-color:transparent">CLICK</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#about" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_about">Sobre</a>
+      <a href="#features" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_features">Funciones</a>
+      <a href="#tokenomics" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_tokenomics">Tokenomics</a>
+      <a href="#team" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_team">Equipo</a>
+      <a href="#leaderboard" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_ranking">Ranking</a>
+    </div>
+   <div class="flex items-center gap-1 flex-wrap justify-end max-w-[50%]">
+      <button onclick="setLang('es')" id="langES" class="lang-btn active px-2 py-1 rounded text-lg border leading-none" title="ES">🇪🇸</button>
+      <button onclick="setLang('en')" id="langEN" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="EN">🇬🇧</button>
+      <button onclick="setLang('fr')" id="langFR" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="FR">🇫🇷</button>
+      <button onclick="setLang('ar')" id="langAR" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="AR">🇸🇦</button>
+      <button onclick="setLang('zh')" id="langZH" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="ZH">🇨🇳</button>
+      <button onclick="setLang('pt')" id="langPT" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="PT">🇵🇹</button>
+      <button onclick="setLang('ja')" id="langJA" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="JA">🇯🇵</button>
+      <button onclick="setLang('ko')" id="langKO" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="KO">🇰🇷</button>
+      <button onclick="setLang('hi')" id="langHI" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="HI">🇮🇳</button>
+      <div class="launchpad-badge px-3 py-1 rounded-full flex items-center gap-1.5 ml-2">
+        <span class="w-2 h-2 rounded-full bg-[#ff0033] animate-pulse"></span>
+        <span class="text-xs font-mono text-[#ff0033] font-medium">STONKFUN</span>
+      </div>
+      <button onclick="showToast(currentT.toast_launch||'Coming soon')" class="btn-cyber px-5 py-2 rounded-lg font-bold text-sm text-white ml-2" style="font-family:'Orbitron',sans-serif" data-i18n="nav_getClick">CONSEGUIR CLICK</button>
+</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-16 px-6">
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-25" style="background:radial-gradient(circle,rgba(255,0,51,.35) 0%,rgba(255,68,68,.12) 35%,transparent 65%)"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+    <div class="radar-ring w-[350px] h-[350px]" style="animation-delay:0s"></div>
+    <div class="radar-ring w-[350px] h-[350px]" style="animation-delay:1s"></div>
+    <div class="radar-ring w-[350px] h-[350px]" style="animation-delay:2s"></div>
+  </div>
+  <div class="relative z-10 max-w-5xl mx-auto text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-10" style="background:rgba(255,0,51,.06);border:1px solid rgba(255,0,51,.15)">
+      <span class="w-2 h-2 rounded-full bg-[#ffe600] animate-pulse"></span>
+      <span class="text-xs font-mono text-[#ffe600] tracking-widest" data-i18n="hero_badge">SEASON 1 — NOT STARTED YET</span>
+    </div>
+    <div class="flex justify-center mb-8">
+      <div class="relative pulse-glow-red rounded-2xl" style="border:2px solid rgba(255,0,51,.2)">
+        <img src="logo.jpg" alt="WorldClick" class="w-72 md:w-96 lg:w-[440px] h-auto object-contain block">
+      </div>
+    </div>
+    <h1 class="font-bold text-2xl md:text-3xl tracking-tight leading-none mb-3" style="font-family:'Orbitron',sans-serif">
+      <span class="glitch" data-text="BOTÓN" style="background:linear-gradient(135deg,#fff,#999);-webkit-background-clip:text;-webkit-text-fill-color:transparent" data-i18n-title="hero_title1">BOTÓN</span>
+      <span class="glitch" data-text=" MUNDIAL" style="background:linear-gradient(135deg,#ff0033,#ff4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent" data-i18n-title="hero_title2"> MUNDIAL</span>
+    </h1>
+    <div class="flex items-center justify-center gap-3 mb-8">
+      <span class="font-mono text-[#ff0033] text-lg font-bold">$CLICK</span><span class="text-gray-700">|</span>
+      <span class="text-gray-400 text-sm font-mono">SOLANA</span><span class="text-gray-700">|</span>
+      <span class="text-gray-400 text-sm font-mono">STONKFUN</span>
+    </div>
+    <p class="text-base md:text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed mb-4" data-i18n="hero_desc">El token que convierte cada clic en <span class="text-[#ff0033] font-semibold">impacto global</span>. Impulsado por la fuerza colectiva de sus poseedores, <strong class="text-white">Botón Mundial (CLICK)</strong> es un token utilitario descentralizado nacido de la visión de un ecosistema donde la competición global, la filantropía y la economía digital convergen en <span class="text-[#00f0ff] font-semibold">un solo clic</span>.</p>
+    <p class="text-sm text-gray-500 max-w-2xl mx-auto mb-10" data-i18n="hero_tagline">Juega. Compite. Gana. Cada clic cambia el mundo. 🌍</p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <button disabled class="btn-disabled px-8 py-3.5 rounded-xl font-bold text-base flex items-center gap-2" style="font-family:'Orbitron',sans-serif">
+        <span class="iconify" data-icon="lucide:gamepad-2" data-width="20"></span>
+        <span data-i18n="hero_playBtn">JUGAR — PRÓXIMAMENTE</span>
+      </button>
+      <a href="whitepaper-click-v2.6.pdf" target="_blank" class="btn-outline px-8 py-3.5 rounded-xl font-bold text-base flex items-center gap-2" style="font-family:'Orbitron',sans-serif">
+        <span class="iconify" data-icon="lucide:file-text" data-width="20"></span>
+        <span data-i18n="hero_wpBtn">WHITEPAPER</span>
+      </a>
+    </div>
+  </div>
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce z-10">
+    <span class="text-xs font-mono text-gray-600 tracking-widest" data-i18n="scroll">SCROLL</span>
+    <span class="iconify text-[#ff0033]" data-icon="lucide:chevron-down" data-width="20"></span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="fade-section py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-16">
+      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="about_label">// LA MISIÓN</span>
+      <h2 class="font-bold text-3xl md:text-5xl text-white mb-6" style="font-family:'Orbitron',sans-serif" data-i18n-html="about_title">UN CLICK.<br><span style="color:#ff0033">IMPACTO MUNDIAL.</span></h2>
+      <p class="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed" data-i18n="about_desc">Botón Mundial (CLICK) es más que un token — es un movimiento. Un ecosistema descentralizado donde <strong class="text-white">la competición global, la filantropía y la economía digital</strong> convergen en un solo clic. Cada interacción suma puntos, cada temporada corona a una nación, cada juego cambia algo real en el mundo.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="feature-card rounded-xl p-6 text-center">
+        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">142</div>
+        <div class="text-sm text-gray-500 font-mono" data-i18n="stat_countries">PAÍSES</div>
+      </div>
+      <div class="feature-card rounded-xl p-6 text-center">
+        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">10%</div>
+        <div class="text-sm text-gray-500 font-mono" data-i18n="stat_charity">IMPACTO</div>
+      </div>
+      <div class="feature-card rounded-xl p-6 text-center">
+        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">∞</div>
+        <div class="text-sm text-gray-500 font-mono" data-i18n="stat_clicks">CLICKS</div>
+      </div>
+      <div class="feature-card rounded-xl p-6 text-center">
+        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">CLICK</div>
+        <div class="text-sm text-gray-500 font-mono">SOLANA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="fade-section py-24 px-6 relative">
+  <div class="absolute top-0 right-0 w-[500px] h-[500px] opacity-10" style="background:radial-gradient(circle,rgba(255,0,51,.4),transparent 70%)"></div>
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-16">
+      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="features_label">// MECÁNICAS PRINCIPALES</span>
+      <h2 class="font-bold text-3xl md:text-5xl text-white" style="font-family:'Orbitron',sans-serif" data-i18n="features_title">CÓMO FUNCIONA</h2>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="feature-card rounded-xl p-8">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(255,0,51,.1);border:1px solid rgba(255,0,51,.2)"><span class="iconify text-[#ff0033]" data-icon="lucide:mouse-pointer-click" data-width="28"></span></div>
+        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f1_title">JUEGA, COMPITE Y GANA</h3>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f1_desc">Cada clic suma puntos para tu marcador personal y para el ranking de tu país. Al final de cada temporada, la nación con más puntos se corona campeona. Los ganadores de los torneos comparten prize pools definidos en las reglas publicadas, y una parte definida apoya a una organización benéfica del país ganador — seleccionada por votación DAO y ejecutada por smart contract.</p>
+      </div>
+      <div class="feature-card rounded-xl p-8">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(0,240,255,.1);border:1px solid rgba(0,240,255,.2)"><span class="iconify text-[#00f0ff]" data-icon="lucide:trophy" data-width="28"></span></div>
+        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f2_title">TORNEOS SEMANALES</h3>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f2_desc">Además de la temporada global, los torneos opcionales ofrecen prize pools independientes. Inscríbete, compite y demuestra tu destreza. Cada torneio es una nueva oportunidad para llevarte una parte del premio y ascender en el ranking mundial.</p>
+      </div>
+      <div class="feature-card rounded-xl p-8">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.2)"><span class="iconify text-[#39ff14]" data-icon="lucide:flame" data-width="28"></span></div>
+        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f3_title">ESFUERZO, NO AZAR</h3>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f3_desc">Tu éxito depende de tu dedicación: rachas diarias, multiplicadores de clics y cosméticos exclusivos que desbloqueas con tu actividad. CLICK premia a quienes más contribuyen, creando una economía donde el esfuerzo tiene valor real.</p>
+      </div>
+      <div class="feature-card rounded-xl p-8">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.2)"><span class="iconify text-[#ffe600]" data-icon="lucide:heart-handshake" data-width="28"></span></div>
+        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f4_title">IMPACTO SOCIAL REAL</h3>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f4_desc">Una parte definida de los prize pools de torneos seleccionados se destina a una organización benéfica del país ganador — elegida por la comunidad mediante votación DAO y ejecutada on-chain por smart contract. Jugar no solo te beneficia a ti, sino que también cambia el mundo.</p>
+      </div>
+      <div class="feature-card rounded-xl p-8 md:col-span-2 lg:col-span-1">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(191,90,242,.1);border:1px solid rgba(191,90,242,.2)"><span class="iconify text-[#bf5af2]" data-icon="lucide:trending-up" data-width="28"></span></div>
+        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f5_title">TOKENOMICS SOSTENIBLE</h3>
+        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f5_desc">Suministro máximo fijo de 1.000.000.000 de CLICK con asignaciones transparentes. El 50% de los ingresos netos reales compra y quema CLICK — cada clic alimenta la quema. Sin preventa, sin segundo token.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOKENOMICS -->
+<section id="tokenomics" class="fade-section py-24 px-6 relative">
+  <div class="absolute bottom-0 left-0 w-[600px] h-[600px] opacity-10" style="background:radial-gradient(circle,rgba(255,0,51,.3),transparent 70%)"></div>
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-16">
+      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="tok_label">// DISTRIBUCIÓN DEL TOKEN</span>
+      <h2 class="font-bold text-3xl md:text-5xl text-white" style="font-family:'Orbitron',sans-serif" data-i18n="tok_title">TOKENOMICS</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="feature-card rounded-xl p-8">
+        <div class="relative w-64 h-64 mx-auto mb-8">
+          <div class="w-full h-full rounded-full" style="background:conic-gradient(#ff0033 0deg 198deg,#00f0ff 198deg 234deg,#39ff14 234deg 270deg,#bf5af2 270deg 306deg,#ffe600 306deg 342deg,#ff6b35 342deg 360deg)"></div>
+          <div class="absolute inset-8 rounded-full bg-[#0d0d15] flex items-center justify-center flex-col">
+            <span class="font-bold text-2xl text-white" style="font-family:'Orbitron',sans-serif">1B</span>
+            <span class="font-mono text-xs text-gray-500" data-i18n="tok_supply">SUPPLY TOTAL</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#ff0033]"></span><span class="text-sm text-gray-400" data-i18n="tok_c1">Mercado y Liquidez 55%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#00f0ff]"></span><span class="text-sm text-gray-400" data-i18n="tok_c2">Tesorería y Desarrollo 10%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#39ff14]"></span><span class="text-sm text-gray-400" data-i18n="tok_c3">Equipo 10%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#bf5af2]"></span><span class="text-sm text-gray-400" data-i18n="tok_c4">Comunidad y Ecosistema 10%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#ffe600]"></span><span class="text-sm text-gray-400" data-i18n="tok_c5">Impacto y Filantropía 10%</span></div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#ff6b35]"></span><span class="text-sm text-gray-400" data-i18n="tok_c6">Reserva Estratégica 5%</span></div>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:rocket" data-width="20"></span></div>
+          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk1_title">MODO STONKFUN STANDARD</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk1_desc">Un lanzamiento abierto en StonkFun con descubrimiento de precio basado en el mercado. Sin preventa, sin ICO.</p></div>
+        </div>
+        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:lock" data-width="20"></span></div>
+          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk2_title">VESTING DEL EQUIPO — 36 MESES</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk2_desc">Los tokens del equipo se liberan en 36 meses con 12 meses de cliff y desbloqueo lineal mensual, alineando los incentivos a largo plazo con el proyecto.</p></div>
+        </div>
+        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(0,240,255,.1)"><span class="iconify text-[#00f0ff]" data-icon="lucide:shield-check" data-width="20"></span></div>
+          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk3_title">SIN IMPUESTO PERMANENTE DE TRANSFERENCIA</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk3_desc">El proyecto no usa Reward Mode ni financia al equipo mediante un impuesto permanente sobre las transacciones de los holders.</p></div>
+        </div>
+        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:trending-up" data-width="20"></span></div>
+          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk4_title">TESORERÍA DE INGRESOS REALES</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk4_desc">Solo los ingresos realmente recibidos — comisiones de creador cuando se generan, actividad del marketplace, patrocinios — financian desarrollo, competiciones e impacto.</p></div>
+        </div>
+        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,107,53,.1)"><span class="iconify text-[#ff6b35]" data-icon="lucide:flame" data-width="20"></span></div>
+          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk5_title">BUYBACK & BURN POR CLICS</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk5_desc">El 50% de los ingresos netos realmente recibidos compra CLICK en el mercado y lo quema permanentemente. Cada clic verificado acumula hacia hitos públicos de quema — jugar reduce directamente el supply.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" class="fade-section py-24 px-6 relative">
+  <div class="absolute top-1/2 left-0 w-[600px] h-[600px] -translate-y-1/2 opacity-5" style="background:radial-gradient(circle,rgba(255,0,51,.4),transparent 70%)"></div>
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="text-center mb-16">
+      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="team_label">// EL EQUIPO</span>
+      <h2 class="font-bold text-3xl md:text-5xl text-white mb-4" style="font-family:'Orbitron',sans-serif" data-i18n="team_title">EQUIPO CLICK</h2>
+      <p class="text-gray-400 text-lg max-w-2xl mx-auto" data-i18n="team_subtitle">Los que hacen que pase. Cuatro inadaptados reescribiendo las reglas, un clic a la vez.</p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="team-card rounded-xl p-6 text-center">
+        <div class="relative w-24 h-24 mx-auto mb-4">
+          <div class="absolute inset-0 rounded-full" style="background:linear-gradient(135deg,#ff0033,#ff4444);opacity:.2"></div>
+          <div class="absolute inset-1 rounded-full bg-[#0d0d15] flex items-center justify-center"><span class="iconify text-[#ff0033]" data-icon="lucide:cpu" data-width="32"></span></div>
+          <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#0d0d15] border border-[#ff0033]/30 flex items-center justify-center"><span class="iconify text-[#ff0033] text-xs" data-icon="lucide:code-2" data-width="14"></span></div>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Marco</h3>
+        <span class="text-xs font-mono text-[#ff0033] uppercase tracking-wider mb-3 block" data-i18n="team_marco_role">Hacker de Sueños</span>
+        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_marco_desc">Fundador. El arquitecto loco detrás de la visión. Convierte cafeína en roadmaps y caos en protocolo. Cree que un clic puede reescribir el mundo.</p>
+      </div>
+      <div class="team-card rounded-xl p-6 text-center">
+        <div class="relative w-24 h-24 mx-auto mb-4">
+          <div class="absolute inset-0 rounded-full" style="background:linear-gradient(135deg,#00f0ff,#00aaff);opacity:.2"></div>
+          <div class="absolute inset-1 rounded-full bg-[#0d0d15] flex items-center justify-center"><span class="iconify text-[#00f0ff]" data-icon="lucide:lightbulb" data-width="32"></span></div>
+          <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#0d0d15] border border-[#00f0ff]/30 flex items-center justify-center"><span class="iconify text-[#00f0ff] text-xs" data-icon="lucide:git-branch" data-width="14"></span></div>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Gustavo</h3>
+        <span class="text-xs font-mono text-[#00f0ff] uppercase tracking-wider mb-3 block" data-i18n="team_gustavo_role">Susurrador de Protocolos</span>
+        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_gustavo_desc">Cofundador. Creativo incorregible. El puente entre ideas locas y reglas del mundo real. Habla fluido mientras mantiene viva la emoción de la comunidad. Se asegura de que juguemos duro pero justo.</p>
+      </div>
+      <div class="team-card rounded-xl p-6 text-center">
+        <div class="relative w-24 h-24 mx-auto mb-4">
+          <div class="absolute inset-0 rounded-full" style="background:linear-gradient(135deg,#39ff14,#00ff88);opacity:.2"></div>
+          <div class="absolute inset-1 rounded-full bg-[#0d0d15] flex items-center justify-center"><span class="iconify text-[#39ff14]" data-icon="lucide:wrench" data-width="32"></span></div>
+          <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#0d0d15] border border-[#39ff14]/30 flex items-center justify-center"><span class="iconify text-[#39ff14] text-xs" data-icon="lucide:terminal" data-width="14"></span></div>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Luis</h3>
+        <span class="text-xs font-mono text-[#39ff14] uppercase tracking-wider mb-3 block" data-i18n="team_luis_role">Comodín</span>
+        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_luis_desc">La navaja suiza en persona. Un día programando, al siguiente negociando con proveedores, y el viernes rediseñando la web. Ningún problema demasiado raro, ninguna tarea demasiado aleatoria. Si existe, él puede hacerlo.</p>
+      </div>
+      <div class="team-card rounded-xl p-6 text-center">
+        <div class="relative w-24 h-24 mx-auto mb-4">
+          <div class="absolute inset-0 rounded-full" style="background:linear-gradient(135deg,#bf5af2,#ff6b35);opacity:.2"></div>
+          <div class="absolute inset-1 rounded-full bg-[#0d0d15] flex items-center justify-center"><span class="iconify text-[#bf5af2]" data-icon="lucide:briefcase" data-width="32"></span></div>
+          <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#0d0d15] border border-[#bf5af2]/30 flex items-center justify-center"><span class="iconify text-[#bf5af2] text-xs" data-icon="lucide:handshake" data-width="14"></span></div>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Barbara</h3>
+        <span class="text-xs font-mono text-[#bf5af2] uppercase tracking-wider mb-3 block" data-i18n="team_barbara_role">Corredor de Sombras</span>
+        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_barbara_desc">La mano invisible detrás de cada trato cerrado. Infiltra instituciones, lee la sala antes de que alguien hable, y convierte contactos fríos en alianzas cálidas. Un camaleón comercial con instintos incorruptibles.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERBOARD -->
+<section id="leaderboard" class="fade-section py-24 px-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16">
+      <span class="font-mono text-xs text-[#ff6b35] tracking-[0.3em] uppercase mb-4 block" data-i18n="lb_label">// RANKING GLOBAL</span>
+      <h2 class="font-bold text-3xl md:text-5xl text-white mb-4" style="font-family:'Orbitron',sans-serif" data-i18n="lb_title">RANKING MUNDIAL</h2>
+      <p class="text-gray-500 text-sm" data-i18n="lb_sub">Season 1 — <span class="text-[#ffe600] font-mono">NOT STARTED YET</span></p>
+    </div>
+    <div class="feature-card rounded-xl overflow-hidden">
+      <div class="grid grid-cols-12 gap-2 px-6 py-3 text-xs font-mono text-gray-600 uppercase tracking-wider" style="border-bottom:1px solid rgba(255,0,51,.1)">
+        <div class="col-span-1">#</div><div class="col-span-5" data-i18n="lb_country">País</div><div class="col-span-3 text-right">Clicks</div><div class="col-span-3 text-right" data-i18n="lb_prize">Premio CLICK</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom:1px solid rgba(255,0,51,.05)">
+        <div class="col-span-1 font-bold text-[#ffe600]" style="font-family:'Orbitron',sans-serif">1</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇧🇷</span><span class="text-white font-medium text-sm">Brazil</span></div>
+        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">4,281,042</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">125,000</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom:1px solid rgba(255,0,51,.05)">
+        <div class="col-span-1 font-bold text-gray-400" style="font-family:'Orbitron',sans-serif">2</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇵🇭</span><span class="text-white font-medium text-sm">Philippines</span></div>
+        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">3,891,205</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">95,000</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom:1px solid rgba(255,0,51,.05)">
+        <div class="col-span-1 font-bold text-orange-400" style="font-family:'Orbitron',sans-serif">3</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇮🇩</span><span class="text-white font-medium text-sm">Indonesia</span></div>
+        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">3,442,880</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">72,000</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom:1px solid rgba(255,0,51,.05)">
+        <div class="col-span-1 font-bold text-gray-500" style="font-family:'Orbitron',sans-serif">4</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇪🇸</span><span class="text-white font-medium text-sm">Spain</span></div>
+        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">2,104,319</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">48,000</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom:1px solid rgba(255,0,51,.05)">
+        <div class="col-span-1 font-bold text-gray-500" style="font-family:'Orbitron',sans-serif">5</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇦🇷</span><span class="text-white font-medium text-sm">Argentina</span></div>
+        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">1,987,654</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">38,000</div>
+      </div>
+      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center">
+        <div class="col-span-1 font-bold text-gray-500" style="font-family:'Orbitron',sans-serif">6</div>
+        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇲🇽</span><span class="text-white font-medium text-sm">Mexico</span></div>
+        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">1,756,012</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">29,000</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="fade-section py-24 px-6 relative">
+  <div class="absolute inset-0 opacity-20" style="background:radial-gradient(ellipse at center,rgba(255,0,51,.3) 0%,rgba(0,240,255,.1) 40%,transparent 70%)"></div>
+  <div class="max-w-4xl mx-auto relative z-10 text-center">
+    <h2 class="font-black text-4xl md:text-6xl text-white mb-4" style="font-family:'Orbitron',sans-serif" data-i18n-html="cta_title">UN CLICK PUEDE<br><span style="background:linear-gradient(135deg,#ff0033,#ff4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent">CAMBIARLO TODO.</span></h2>
+    <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto" data-i18n="cta_desc">Forma parte del movimiento. Juega, compite, gana y cambia el mundo — un clic a la vez.</p>
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+      <button onclick="showToast(currentT.toast_launch||'Coming soon')" class="btn-cyber px-10 py-4 rounded-xl font-bold text-lg text-white flex items-center gap-3" style="font-family:'Orbitron',sans-serif">
+        <span class="iconify" data-icon="lucide:rocket" data-width="24"></span><span data-i18n="cta_getClick">CONSEGUIR $CLICK</span>
+      </button>
+      <button disabled class="btn-disabled px-10 py-4 rounded-xl font-semibold text-lg flex items-center gap-3" style="font-family:'Orbitron',sans-serif">
+        <span class="iconify" data-icon="lucide:gamepad-2" data-width="24"></span><span data-i18n="cta_play">JUGAR — PRÓXIMAMENTE</span>
+      </button>
+    </div>
+    <div class="flex items-center justify-center gap-4">
+      <a href="#" onclick="showToast('Twitter');return false" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:twitter" data-width="20"></span></a>
+      <a href="#" onclick="showToast('Discord');return false" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:message-circle" data-width="20"></span></a>
+      <a href="#" onclick="showToast('Telegram');return false" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:send" data-width="20"></span></a>
+      <a href="whitepaper-click-v2.6.pdf" target="_blank" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:book-open" data-width="20"></span></a>
+    </div>
+  </div>
+</section>
+
+<footer class="py-12 px-6" style="border-top:1px solid rgba(255,0,51,.08)">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#ff0033,#ff4444)"><span class="font-bold text-xs text-white" style="font-family:'Orbitron',sans-serif">W</span></div>
+      <span class="font-mono text-xs text-gray-600" data-i18n="footer_copy">Botón Mundial (CLICK) © 2026 — Impulsado por Solana</span>
+    </div>
+    <div class="launchpad-badge px-3 py-1 rounded-full flex items-center gap-1.5">
+      <span class="text-xs font-mono text-[#ff0033] font-medium" data-i18n="footer_launchpad">Lanzamiento en StonkFun</span>
+    </div>
+  </div>
+</footer>
+
+<div id="toast" class="toast flex items-center gap-3"><span id="toastMsg" class="text-sm text-white font-medium"></span></div>
+
+<script>
+let currentLang = 'es';
+let currentT = {};
+
+async function setLang(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+  ['es','en','fr','ar','zh','pt','ja','ko','hi'].forEach(l => {
+    const btn = document.getElementById('lang' + l.toUpperCase());
+    if(btn) btn.classList.toggle('active', l === lang);
+  });
+  try {
+    const res = await fetch(`locales/${lang}.json`);
+    if(!res.ok) throw new Error('fetch failed');
+    currentT = await res.json();
+  } catch(e) {
+    console.warn('Failed to load locale, using page defaults');
+    currentT = {};
+  }
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (currentT[key] !== undefined) el.innerHTML = currentT[key];
+  });
+  document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    const key = el.getAttribute('data-i18n-title');
+    if (currentT[key] !== undefined) {
+      el.textContent = currentT[key];
+      el.setAttribute('data-text', currentT[key]);
+    }
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (currentT[key] !== undefined) el.innerHTML = currentT[key];
+  });
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  const toastMsg = document.getElementById('toastMsg');
+  toastMsg.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+(function() {
+  const container = document.getElementById('particles');
+  const colors = ['#ff0033', '#ff4444', '#00f0ff', '#39ff14', '#bf5af2', '#ffe600'];
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const left = Math.random() * 100;
+    const dur = 8 + Math.random() * 12;
+    const delay = Math.random() * dur;
+    const drift = (Math.random() - 0.5) * 100;
+    p.style.cssText = `left:${left}%;bottom:-10px;background:${color};box-shadow:0 0 6px ${color};animation-duration:${dur}s;animation-delay:-${delay}s;--drift:${drift}px;`;
+    container.appendChild(p);
+  }
+})();
+
+const fadeSections = document.querySelectorAll('.fade-section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+fadeSections.forEach(s => observer.observe(s));
+
+setLang('es');
+</script>
+</body>
+</html>

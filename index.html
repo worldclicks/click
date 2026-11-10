@@ -1,463 +1,517 @@
 <!DOCTYPE html>
-<html lang="es" dir="ltr">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CLICK — Botón Mundial</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{--neon-red:#ff0033;--neon-cyan:#00f0ff;--neon-green:#39ff14;--neon-purple:#bf5af2;--neon-yellow:#ffe600;--bg:#0a0a0f;--card:#0d0d15}
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--bg);color:#e0e0e0;font-family:'Inter',sans-serif;overflow-x:hidden}
-  .scan-lines::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);pointer-events:none;z-index:9999}
-  .grid-bg{background-image:linear-gradient(rgba(255,0,51,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,51,.03) 1px,transparent 1px);background-size:40px 40px}
-  .glitch{position:relative}.glitch::before,.glitch::after{content:attr(data-text);position:absolute;inset:0;width:100%;height:100%}
-  .glitch::before{animation:glitch1 3s infinite;color:#ff0033;z-index:-1}.glitch::after{animation:glitch2 3s infinite;color:#00f0ff;z-index:-2}
-  @keyframes glitch1{0%,95%,100%{transform:translate(0)}96%{transform:translate(-3px,2px)}97%{transform:translate(3px,-1px)}}
-  @keyframes glitch2{0%,95%,100%{transform:translate(0)}96%{transform:translate(3px,-2px)}97%{transform:translate(-3px,1px)}}
-  .pulse-glow-red{animation:pulseGlowRed 2s ease-in-out infinite alternate}
-  @keyframes pulseGlowRed{from{box-shadow:0 0 20px rgba(255,0,51,.3),0 0 40px rgba(255,0,51,.1)}to{box-shadow:0 0 35px rgba(255,0,51,.5),0 0 70px rgba(255,0,51,.2),0 0 100px rgba(255,0,51,.1)}}
-  .particle{position:absolute;width:2px;height:2px;border-radius:50%;animation:floatUp linear infinite}
-  @keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-100vh) translateX(var(--drift));opacity:0}}
-  .radar-ring{position:absolute;border-radius:50%;border:1px solid rgba(255,0,51,.12);animation:radarPulse 3s ease-out infinite}
-  @keyframes radarPulse{0%{transform:scale(.8);opacity:.6}100%{transform:scale(2.5);opacity:0}}
-  .feature-card{background:linear-gradient(135deg,rgba(13,13,21,.9),rgba(26,26,46,.6));border:1px solid rgba(255,0,51,.1);transition:all .4s cubic-bezier(.25,.46,.45,.94);backdrop-filter:blur(20px)}
-  .feature-card:hover{border-color:rgba(255,0,51,.4);box-shadow:0 0 30px rgba(255,0,51,.12),inset 0 0 30px rgba(255,0,51,.04);transform:translateY(-4px)}
-  .btn-cyber{position:relative;overflow:hidden;background:linear-gradient(135deg,#ff0033,#ff4444);transition:all .3s}
-  .btn-cyber:hover{box-shadow:0 0 30px rgba(255,0,51,.4),0 0 60px rgba(255,0,51,.2);transform:scale(1.02)}
-  .btn-cyber::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(transparent,rgba(255,255,255,.1),transparent);transform:rotate(45deg);transition:.5s}
-  .btn-cyber:hover::after{left:100%}
-  .btn-outline{border:1px solid rgba(255,0,51,.5);color:#ff4444;transition:all .3s}
-  .btn-outline:hover{background:rgba(255,0,51,.1);border-color:#ff0033;box-shadow:0 0 20px rgba(255,0,51,.2)}
-  .btn-disabled{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.25);cursor:not-allowed}
-  .stat-number{background:linear-gradient(135deg,#ff0033,#ff4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .toast{position:fixed;bottom:24px;right:24px;z-index:10000;padding:16px 24px;border-radius:12px;background:rgba(13,13,21,.95);border:1px solid rgba(255,0,51,.3);backdrop-filter:blur(20px);transform:translateY(100px);opacity:0;transition:all .4s cubic-bezier(.16,1,.3,1)}
-  .toast.show{transform:translateY(0);opacity:1}
-  .lb-row{transition:all .3s}.lb-row:hover{background:rgba(255,0,51,.05)}
-  .fade-section{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}.fade-section.visible{opacity:1;transform:translateY(0)}
-  .launchpad-badge{background:linear-gradient(135deg,rgba(255,0,51,.15),rgba(0,240,255,.08));border:1px solid rgba(255,0,51,.3)}
-  .lang-btn{transition:all .2s}.lang-btn.active{color:#ff4444;border-color:rgba(255,0,51,.5);background:rgba(255,0,51,.08)}
-  .lang-btn:not(.active){color:#666;border-color:rgba(255,255,255,.08)}.lang-btn:not(.active):hover{color:#999;border-color:rgba(255,255,255,.15)}
-  .team-card{background:linear-gradient(135deg,rgba(13,13,21,.95),rgba(26,26,46,.7));border:1px solid rgba(255,0,51,.08);transition:all .4s cubic-bezier(.25,.46,.45,.94);position:relative;overflow:hidden}
-  .team-card:hover{border-color:rgba(255,0,51,.35);transform:translateY(-6px);box-shadow:0 20px 40px rgba(255,0,51,.1)}
-  .team-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff0033,transparent);opacity:0;transition:opacity .4s}.team-card:hover::before{opacity:1}
-  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0a0a0f}::-webkit-scrollbar-thumb{background:linear-gradient(#ff0033,#ff4444);border-radius:3px}
-  [dir="rtl"] .font-orbitron{letter-spacing:0}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLICK — One World. One Button.</title>
+  <meta name="description" content="WorldClick is an experiment in global participation. One simple action connects people, communities and countries through a shared digital experience.">
+  <meta name="theme-color" content="#F4EBD8">
+  <link rel="canonical" href="https://theworldclicks.com/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CLICK — WorldClick">
+  <meta property="og:title" content="CLICK — One World. One Button.">
+  <meta property="og:description" content="An experiment in global participation. One simple action connects people, communities and countries through a shared digital experience.">
+  <meta property="og:url" content="https://theworldclicks.com/">
+  <meta property="og:image" content="https://theworldclicks.com/assets/images/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CLICK — One World. One Button.">
+  <meta name="twitter:description" content="An experiment in global participation. One simple action connects people, communities and countries.">
+  <meta name="twitter:image" content="https://theworldclicks.com/assets/images/og-image.jpg">
+
+  <link rel="icon" href="assets/favicon/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png">
+
+  <link rel="preload" href="assets/fonts/LibreBaskerville-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/fonts/IBMPlexMono-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="css/styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <noscript><style>.reveal{opacity:1;transform:none;}</style></noscript>
 </head>
-<body class="scan-lines grid-bg">
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-<div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
-
-<nav class="fixed top-0 left-0 right-0 z-50" style="background:rgba(10,10,15,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,0,51,.08)">
-  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#ff0033,#ff4444)">
-        <span class="font-bold text-sm text-white" style="font-family:'Orbitron',sans-serif">W</span>
-      </div>
-      <span class="font-bold text-lg tracking-wider" style="font-family:'Orbitron',sans-serif;background:linear-gradient(135deg,#ff4444,#e0e0e0);-webkit-background-clip:text;-webkit-text-fill-color:transparent">CLICK</span>
-    </div>
-    <div class="hidden md:flex items-center gap-8">
-      <a href="#about" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_about">Sobre</a>
-      <a href="#features" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_features">Funciones</a>
-      <a href="#tokenomics" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_tokenomics">Tokenomics</a>
-      <a href="#team" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_team">Equipo</a>
-      <a href="#leaderboard" class="text-sm text-gray-400 hover:text-[#ff0033] transition-colors font-medium" data-i18n="nav_ranking">Ranking</a>
-    </div>
-   <div class="flex items-center gap-1 flex-wrap justify-end max-w-[50%]">
-      <button onclick="setLang('es')" id="langES" class="lang-btn active px-2 py-1 rounded text-lg border leading-none" title="ES">🇪🇸</button>
-      <button onclick="setLang('en')" id="langEN" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="EN">🇬🇧</button>
-      <button onclick="setLang('fr')" id="langFR" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="FR">🇫🇷</button>
-      <button onclick="setLang('ar')" id="langAR" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="AR">🇸🇦</button>
-      <button onclick="setLang('zh')" id="langZH" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="ZH">🇨🇳</button>
-      <button onclick="setLang('pt')" id="langPT" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="PT">🇵🇹</button>
-      <button onclick="setLang('ja')" id="langJA" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="JA">🇯🇵</button>
-      <button onclick="setLang('ko')" id="langKO" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="KO">🇰🇷</button>
-      <button onclick="setLang('hi')" id="langHI" class="lang-btn px-2 py-1 rounded text-lg border leading-none" title="HI">🇮🇳</button>
-      <div class="launchpad-badge px-3 py-1 rounded-full flex items-center gap-1.5 ml-2">
-        <span class="w-2 h-2 rounded-full bg-[#ff0033] animate-pulse"></span>
-        <span class="text-xs font-mono text-[#ff0033] font-medium">STONKFUN</span>
-      </div>
-      <button onclick="showToast(currentT.toast_launch||'Coming soon')" class="btn-cyber px-5 py-2 rounded-lg font-bold text-sm text-white ml-2" style="font-family:'Orbitron',sans-serif" data-i18n="nav_getClick">CONSEGUIR CLICK</button>
-</div>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="relative min-h-screen flex flex-col items-center justify-center pt-20 pb-16 px-6">
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-25" style="background:radial-gradient(circle,rgba(255,0,51,.35) 0%,rgba(255,68,68,.12) 35%,transparent 65%)"></div>
-  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-    <div class="radar-ring w-[350px] h-[350px]" style="animation-delay:0s"></div>
-    <div class="radar-ring w-[350px] h-[350px]" style="animation-delay:1s"></div>
-    <div class="radar-ring w-[350px] h-[350px]" style="animation-delay:2s"></div>
-  </div>
-  <div class="relative z-10 max-w-5xl mx-auto text-center">
-    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-10" style="background:rgba(255,0,51,.06);border:1px solid rgba(255,0,51,.15)">
-      <span class="w-2 h-2 rounded-full bg-[#ffe600] animate-pulse"></span>
-      <span class="text-xs font-mono text-[#ffe600] tracking-widest" data-i18n="hero_badge">SEASON 1 — NOT STARTED YET</span>
-    </div>
-    <div class="flex justify-center mb-8">
-      <div class="relative pulse-glow-red rounded-2xl" style="border:2px solid rgba(255,0,51,.2)">
-        <img src="logo.jpg" alt="WorldClick" class="w-72 md:w-96 lg:w-[440px] h-auto object-contain block">
-      </div>
-    </div>
-    <h1 class="font-bold text-2xl md:text-3xl tracking-tight leading-none mb-3" style="font-family:'Orbitron',sans-serif">
-      <span class="glitch" data-text="BOTÓN" style="background:linear-gradient(135deg,#fff,#999);-webkit-background-clip:text;-webkit-text-fill-color:transparent" data-i18n-title="hero_title1">BOTÓN</span>
-      <span class="glitch" data-text=" MUNDIAL" style="background:linear-gradient(135deg,#ff0033,#ff4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent" data-i18n-title="hero_title2"> MUNDIAL</span>
-    </h1>
-    <div class="flex items-center justify-center gap-3 mb-8">
-      <span class="font-mono text-[#ff0033] text-lg font-bold">$CLICK</span><span class="text-gray-700">|</span>
-      <span class="text-gray-400 text-sm font-mono">SOLANA</span><span class="text-gray-700">|</span>
-      <span class="text-gray-400 text-sm font-mono">STONKFUN</span>
-    </div>
-    <p class="text-base md:text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed mb-4" data-i18n="hero_desc">El token que convierte cada clic en <span class="text-[#ff0033] font-semibold">impacto global</span>. Impulsado por la fuerza colectiva de sus poseedores, <strong class="text-white">Botón Mundial (CLICK)</strong> es un token utilitario descentralizado nacido de la visión de un ecosistema donde la competición global, la filantropía y la economía digital convergen en <span class="text-[#00f0ff] font-semibold">un solo clic</span>.</p>
-    <p class="text-sm text-gray-500 max-w-2xl mx-auto mb-10" data-i18n="hero_tagline">Juega. Compite. Gana. Cada clic cambia el mundo. 🌍</p>
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-      <button disabled class="btn-disabled px-8 py-3.5 rounded-xl font-bold text-base flex items-center gap-2" style="font-family:'Orbitron',sans-serif">
-        <span class="iconify" data-icon="lucide:gamepad-2" data-width="20"></span>
-        <span data-i18n="hero_playBtn">JUGAR — PRÓXIMAMENTE</span>
-      </button>
-      <a href="whitepaper-click-v2.5.pdf" target="_blank" class="btn-outline px-8 py-3.5 rounded-xl font-bold text-base flex items-center gap-2" style="font-family:'Orbitron',sans-serif">
-        <span class="iconify" data-icon="lucide:file-text" data-width="20"></span>
-        <span data-i18n="hero_wpBtn">WHITEPAPER</span>
+  <header class="site-header" id="top">
+    <nav class="nav container" aria-label="Primary">
+      <a class="brand" href="#top" aria-label="CLICK — WorldClick, back to top">
+        <img class="brand-mark" src="assets/images/logo-emblem-256.png" alt="WorldClick emblem — a red button at the centre of a dotted world map" width="40" height="40">
+        <span class="brand-word">World<em>Click</em></span>
       </a>
-    </div>
-  </div>
-  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce z-10">
-    <span class="text-xs font-mono text-gray-600 tracking-widest" data-i18n="scroll">SCROLL</span>
-    <span class="iconify text-[#ff0033]" data-icon="lucide:chevron-down" data-width="20"></span>
-  </div>
-</section>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links">
+        <span class="sr-only">Menu</span>
+        <span class="menu-lines" aria-hidden="true"></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#concept">Concept</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#tokenomics">Tokenomics</a></li>
+        <li><a href="#impact">Impact</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+        <li><a href="assets/CLICK-Whitepaper-V2.7.pdf">Whitepaper</a></li>
+        <li><a class="nav-cta" href="#offering">Participate <span class="nav-cta-tag">Soon</span></a></li>
+      </ul>
+    </nav>
+  </header>
 
-<!-- ABOUT -->
-<section id="about" class="fade-section py-24 px-6">
-  <div class="max-w-6xl mx-auto">
-    <div class="text-center mb-16">
-      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="about_label">// LA MISIÓN</span>
-      <h2 class="font-bold text-3xl md:text-5xl text-white mb-6" style="font-family:'Orbitron',sans-serif" data-i18n-html="about_title">UN CLICK.<br><span style="color:#ff0033">IMPACTO MUNDIAL.</span></h2>
-      <p class="text-gray-400 text-lg max-w-3xl mx-auto leading-relaxed" data-i18n="about_desc">Botón Mundial (CLICK) es más que un token — es un movimiento. Un ecosistema descentralizado donde <strong class="text-white">la competición global, la filantropía y la economía digital</strong> convergen en un solo clic. Cada interacción suma puntos, cada temporada corona a una nación, cada juego cambia algo real en el mundo.</p>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="feature-card rounded-xl p-6 text-center">
-        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">142</div>
-        <div class="text-sm text-gray-500 font-mono" data-i18n="stat_countries">PAÍSES</div>
-      </div>
-      <div class="feature-card rounded-xl p-6 text-center">
-        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">10%</div>
-        <div class="text-sm text-gray-500 font-mono" data-i18n="stat_charity">IMPACTO</div>
-      </div>
-      <div class="feature-card rounded-xl p-6 text-center">
-        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">∞</div>
-        <div class="text-sm text-gray-500 font-mono" data-i18n="stat_clicks">CLICKS</div>
-      </div>
-      <div class="feature-card rounded-xl p-6 text-center">
-        <div class="stat-number font-bold text-3xl md:text-4xl mb-2" style="font-family:'Orbitron',sans-serif">CLICK</div>
-        <div class="text-sm text-gray-500 font-mono">SOLANA</div>
-      </div>
-    </div>
-  </div>
-</section>
+  <main id="main">
 
-<!-- FEATURES -->
-<section id="features" class="fade-section py-24 px-6 relative">
-  <div class="absolute top-0 right-0 w-[500px] h-[500px] opacity-10" style="background:radial-gradient(circle,rgba(255,0,51,.4),transparent 70%)"></div>
-  <div class="max-w-6xl mx-auto relative z-10">
-    <div class="text-center mb-16">
-      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="features_label">// MECÁNICAS PRINCIPALES</span>
-      <h2 class="font-bold text-3xl md:text-5xl text-white" style="font-family:'Orbitron',sans-serif" data-i18n="features_title">CÓMO FUNCIONA</h2>
-    </div>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="feature-card rounded-xl p-8">
-        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(255,0,51,.1);border:1px solid rgba(255,0,51,.2)"><span class="iconify text-[#ff0033]" data-icon="lucide:mouse-pointer-click" data-width="28"></span></div>
-        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f1_title">JUEGA, COMPITE Y GANA</h3>
-        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f1_desc">Cada clic suma puntos para tu marcador personal y para el ranking de tu país. Al final de cada temporada, la nación con más puntos se corona campeona. Los ganadores de los torneos comparten prize pools definidos en las reglas publicadas, y una parte definida apoya a una organización benéfica del país ganador — seleccionada por votación DAO y ejecutada por smart contract.</p>
-      </div>
-      <div class="feature-card rounded-xl p-8">
-        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(0,240,255,.1);border:1px solid rgba(0,240,255,.2)"><span class="iconify text-[#00f0ff]" data-icon="lucide:trophy" data-width="28"></span></div>
-        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f2_title">TORNEOS SEMANALES</h3>
-        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f2_desc">Además de la temporada global, los torneos opcionales ofrecen prize pools independientes. Inscríbete, compite y demuestra tu destreza. Cada torneio es una nueva oportunidad para llevarte una parte del premio y ascender en el ranking mundial.</p>
-      </div>
-      <div class="feature-card rounded-xl p-8">
-        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(57,255,20,.1);border:1px solid rgba(57,255,20,.2)"><span class="iconify text-[#39ff14]" data-icon="lucide:flame" data-width="28"></span></div>
-        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f3_title">ESFUERZO, NO AZAR</h3>
-        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f3_desc">Tu éxito depende de tu dedicación: rachas diarias, multiplicadores de clics y cosméticos exclusivos que desbloqueas con tu actividad. CLICK premia a quienes más contribuyen, creando una economía donde el esfuerzo tiene valor real.</p>
-      </div>
-      <div class="feature-card rounded-xl p-8">
-        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(255,230,0,.1);border:1px solid rgba(255,230,0,.2)"><span class="iconify text-[#ffe600]" data-icon="lucide:heart-handshake" data-width="28"></span></div>
-        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f4_title">IMPACTO SOCIAL REAL</h3>
-        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f4_desc">Una parte definida de los prize pools de torneos seleccionados se destina a una organización benéfica del país ganador — elegida por la comunidad mediante votación DAO y ejecutada on-chain por smart contract. Jugar no solo te beneficia a ti, sino que también cambia el mundo.</p>
-      </div>
-      <div class="feature-card rounded-xl p-8 md:col-span-2 lg:col-span-1">
-        <div class="w-14 h-14 rounded-xl flex items-center justify-center mb-6" style="background:rgba(191,90,242,.1);border:1px solid rgba(191,90,242,.2)"><span class="iconify text-[#bf5af2]" data-icon="lucide:trending-up" data-width="28"></span></div>
-        <h3 class="font-bold text-lg text-white mb-3" style="font-family:'Orbitron',sans-serif" data-i18n="f5_title">TOKENOMICS SOSTENIBLE</h3>
-        <p class="text-gray-400 text-sm leading-relaxed" data-i18n="f5_desc">Suministro máximo fijo de 1.000.000.000 de CLICK con asignaciones transparentes. El 50% de los ingresos netos reales compra y quema CLICK — cada clic alimenta la quema. Sin preventa, sin segundo token.</p>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- ============ HERO — BEYOND THE BUTTON ============ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow reveal"><span class="eyebrow-dot" aria-hidden="true"></span> Beyond the button — a global participation experiment</p>
+          <h1 class="hero-title reveal" id="hero-title">One world.<br><em>One button.</em></h1>
+          <p class="hero-lead reveal">An experiment in global participation. One simple action connects people, communities and countries through a shared digital experience.</p>
+          <div class="hero-actions reveal">
+            <a class="btn btn-primary" href="#concept">Explore the project</a>
+            <a class="btn btn-ghost" href="assets/CLICK-Whitepaper-V2.7.pdf">Read the whitepaper</a>
+          </div>
+          <p class="hero-meta reveal" role="list">
+            <span role="listitem">Solana ecosystem</span>
+            <span role="listitem">Single fungible token</span>
+            <span role="listitem">Planned — not yet launched</span>
+          </p>
+        </div>
 
-<!-- TOKENOMICS -->
-<section id="tokenomics" class="fade-section py-24 px-6 relative">
-  <div class="absolute bottom-0 left-0 w-[600px] h-[600px] opacity-10" style="background:radial-gradient(circle,rgba(255,0,51,.3),transparent 70%)"></div>
-  <div class="max-w-6xl mx-auto relative z-10">
-    <div class="text-center mb-16">
-      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="tok_label">// DISTRIBUCIÓN DEL TOKEN</span>
-      <h2 class="font-bold text-3xl md:text-5xl text-white" style="font-family:'Orbitron',sans-serif" data-i18n="tok_title">TOKENOMICS</h2>
-    </div>
-    <div class="grid md:grid-cols-2 gap-8 items-center">
-      <div class="feature-card rounded-xl p-8">
-        <div class="relative w-64 h-64 mx-auto mb-8">
-          <div class="w-full h-full rounded-full" style="background:conic-gradient(#ff0033 0deg 198deg,#00f0ff 198deg 234deg,#39ff14 234deg 270deg,#bf5af2 270deg 306deg,#ffe600 306deg 342deg,#ff6b35 342deg 360deg)"></div>
-          <div class="absolute inset-8 rounded-full bg-[#0d0d15] flex items-center justify-center flex-col">
-            <span class="font-bold text-2xl text-white" style="font-family:'Orbitron',sans-serif">1B</span>
-            <span class="font-mono text-xs text-gray-500" data-i18n="tok_supply">SUPPLY TOTAL</span>
+        <div class="hero-stage reveal" aria-label="Interactive demonstration of the WorldClick button">
+          <div class="stage-frame">
+            <p class="stage-label" aria-hidden="true">FIG. 01<br><span>The button</span></p>
+            <div class="button-assembly">
+              <span class="orbit orbit-a" aria-hidden="true"></span>
+              <span class="orbit orbit-b" aria-hidden="true"></span>
+              <span class="button-base" aria-hidden="true"></span>
+              <button class="push-button" id="push-button" type="button" aria-describedby="demo-note">
+                <span class="push-button-face">CLICK<small>PRESS</small></span>
+              </button>
+            </div>
+            <div class="demo-counter" aria-live="polite">
+              <span class="demo-counter-label">Your clicks on this page</span>
+              <span class="demo-counter-value" id="click-count">0</span>
+            </div>
+            <p class="demo-note" id="demo-note">Demo data — not live participation.<br>Clicks here are local to your browser and create nothing on-chain.</p>
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#ff0033]"></span><span class="text-sm text-gray-400" data-i18n="tok_c1">Mercado y Liquidez 55%</span></div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#00f0ff]"></span><span class="text-sm text-gray-400" data-i18n="tok_c2">Tesorería y Desarrollo 10%</span></div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#39ff14]"></span><span class="text-sm text-gray-400" data-i18n="tok_c3">Equipo 10%</span></div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#bf5af2]"></span><span class="text-sm text-gray-400" data-i18n="tok_c4">Comunidad y Ecosistema 10%</span></div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#ffe600]"></span><span class="text-sm text-gray-400" data-i18n="tok_c5">Impacto y Filantropía 10%</span></div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm bg-[#ff6b35]"></span><span class="text-sm text-gray-400" data-i18n="tok_c6">Reserva Estratégica 5%</span></div>
+      </div>
+    </section>
+
+    <!-- ============ PRINCIPLES BAND ============ -->
+    <div class="band" role="list" aria-label="Project principles">
+      <span role="listitem">One universal action</span>
+      <span role="listitem" aria-hidden="true">·</span>
+      <span role="listitem">Every country on one board</span>
+      <span role="listitem" aria-hidden="true">·</span>
+      <span role="listitem">Seasons &amp; tournaments</span>
+      <span role="listitem" aria-hidden="true">·</span>
+      <span role="listitem">Impact beyond the screen</span>
+    </div>
+
+    <!-- ============ CONCEPT ============ -->
+    <section class="section" id="concept" aria-labelledby="concept-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index">01 — The concept</p>
+          <h2 class="section-title" id="concept-title">The simplest action<br>a person can take.</h2>
+        </header>
+        <div class="concept-grid">
+          <blockquote class="concept-quote reveal">
+            <p>A click is simple, immediate and accessible to almost everyone on Earth.</p>
+          </blockquote>
+          <div class="concept-body reveal">
+            <p>CLICK starts with a universal action. WorldClick turns that action into a shared experience where individual participation contributes to a collective global picture — people, communities and countries visible on the same board.</p>
+            <p>One person presses a button. A country sees its score move. A season crowns a winner. The smallest digital gesture becomes a way to belong to something larger.</p>
+          </div>
+        </div>
+        <ol class="concept-notes" role="list">
+          <li class="reveal">
+            <span class="note-num" aria-hidden="true">i.</span>
+            <h3>A universal action</h3>
+            <p>No tutorial, no barrier. Pressing a button is the most democratic interaction in the digital world.</p>
+          </li>
+          <li class="reveal">
+            <span class="note-num" aria-hidden="true">ii.</span>
+            <h3>A shared scoreboard</h3>
+            <p>Individual clicks aggregate into country scores and rankings — a picture painted by millions of small gestures.</p>
+          </li>
+          <li class="reveal">
+            <span class="note-num" aria-hidden="true">iii.</span>
+            <h3>A collective story</h3>
+            <p>Seasons, tournaments and impact initiatives turn repeated participation into an ongoing global narrative.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section section-alt" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index">02 — How it works</p>
+          <h2 class="section-title" id="how-title">From one press<br>to a global picture.</h2>
+        </header>
+        <ol class="steps" role="list">
+          <li class="step reveal">
+            <span class="step-num" aria-hidden="true">01</span>
+            <div>
+              <h3>Participate</h3>
+              <p>Open WorldClick and press the button. That is the entire onboarding.</p>
+            </div>
+          </li>
+          <li class="step reveal">
+            <span class="step-num" aria-hidden="true">02</span>
+            <div>
+              <h3>Accumulate points</h3>
+              <p>Your activity is recorded as application-level points attached to your participation.</p>
+            </div>
+          </li>
+          <li class="step reveal">
+            <span class="step-num" aria-hidden="true">03</span>
+            <div>
+              <h3>Contribute to rankings</h3>
+              <p>Your participation feeds leaderboards and your country's score.</p>
+            </div>
+          </li>
+          <li class="step reveal">
+            <span class="step-num" aria-hidden="true">04</span>
+            <div>
+              <h3>Join seasons &amp; competitions</h3>
+              <p>Take part in time-boxed seasons and tournaments run under published rules.</p>
+            </div>
+          </li>
+          <li class="step reveal">
+            <span class="step-num" aria-hidden="true">05</span>
+            <div>
+              <h3>Become part of the experience</h3>
+              <p>A global participation experience shared by people, communities and countries.</p>
+            </div>
+          </li>
+        </ol>
+        <aside class="callout reveal" role="note">
+          <p class="callout-tag">Important distinction</p>
+          <p>Ordinary clicks are <strong>application-level events</strong>. They do not automatically generate blockchain transactions, CLICK tokens, revenue, donations or buybacks.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ GLOBAL PARTICIPATION ============ -->
+    <section class="section section-dark" id="global" aria-labelledby="global-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index">03 — Global participation</p>
+          <h2 class="section-title" id="global-title">One board.<br>Every country.</h2>
+        </header>
+        <div class="global-grid">
+          <figure class="global-map reveal" aria-labelledby="map-caption">
+            <img class="global-map-img" src="assets/images/logo-emblem.png" alt="WorldClick emblem — a dotted world map radiating from a red button" width="648" height="648" loading="lazy">
+            <figcaption id="map-caption">Illustrative visualization. No live statistics are displayed on this page.</figcaption>
+          </figure>
+          <div class="global-copy">
+            <div class="rank-card reveal">
+              <p class="rank-card-head">Country ranking — concept</p>
+              <ol class="rank-list" aria-label="Illustrative country ranking example">
+                <li><span class="rank-pos">1</span><span class="rank-country">Portugal</span><span class="rank-bar" style="--w:.92"></span></li>
+                <li><span class="rank-pos">2</span><span class="rank-country">Brazil</span><span class="rank-bar" style="--w:.78"></span></li>
+                <li><span class="rank-pos">3</span><span class="rank-country">Japan</span><span class="rank-bar" style="--w:.61"></span></li>
+                <li><span class="rank-pos">4</span><span class="rank-country">Nigeria</span><span class="rank-bar" style="--w:.47"></span></li>
+                <li><span class="rank-pos">5</span><span class="rank-country">Canada</span><span class="rank-bar" style="--w:.33"></span></li>
+              </ol>
+              <p class="rank-note">Illustrative example — not real data.</p>
+            </div>
+            <p class="global-text reveal">Every click joins a national score. WorldClick is designed as a planet-scale scoreboard where communities rally behind their flag — and where the map itself becomes the interface.</p>
+          </div>
         </div>
       </div>
-      <div class="space-y-6">
-        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:rocket" data-width="20"></span></div>
-          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk1_title">MODO STONKFUN STANDARD</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk1_desc">Un lanzamiento abierto en StonkFun con descubrimiento de precio basado en el mercado. Sin preventa, sin ICO.</p></div>
+    </section>
+
+    <!-- ============ SEASONS & TOURNAMENTS ============ -->
+    <section class="section" id="seasons" aria-labelledby="seasons-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index">04 — Seasons &amp; tournaments</p>
+          <h2 class="section-title" id="seasons-title">Participation<br>with a rhythm.</h2>
+        </header>
+        <div class="seasons-grid">
+          <div class="season-line reveal" aria-label="Illustrative season timeline">
+            <div class="season-track" aria-hidden="true">
+              <span class="season-node is-first"><i>01</i></span>
+              <span class="season-node"><i>02</i></span>
+              <span class="season-node"><i>03</i></span>
+              <span class="season-node is-next"><i>04</i></span>
+            </div>
+            <div class="season-labels">
+              <span>Season opens</span><span>Rankings form</span><span>Final push</span><span>Season closes</span>
+            </div>
+          </div>
+          <div class="seasons-copy reveal">
+            <p>WorldClick may organize seasons, rankings and tournaments based on published rules. Each season is a chapter: scores reset, countries compete again, and the story continues.</p>
+            <ul class="ticks" role="list">
+              <li>Time-boxed global seasons with clear start and end conditions.</li>
+              <li>Rankings and country scores under transparent, published rules.</li>
+              <li>Tournaments with defined structures and reward allocations.</li>
+            </ul>
+            <p class="fineprint">Rewards, where offered, follow published rules. No prize is guaranteed, and ordinary clicks do not themselves earn tokens.</p>
+          </div>
         </div>
-        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:lock" data-width="20"></span></div>
-          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk2_title">VESTING DEL EQUIPO — 36 MESES</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk2_desc">Los tokens del equipo se liberan en 36 meses con 12 meses de cliff y desbloqueo lineal mensual, alineando los incentivos a largo plazo con el proyecto.</p></div>
+      </div>
+    </section>
+
+    <!-- ============ CLICK TOKEN ============ -->
+    <section class="section section-alt" id="token" aria-labelledby="token-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index">05 — The CLICK token</p>
+          <h2 class="section-title" id="token-title">Two layers,<br>one ecosystem.</h2>
+        </header>
+        <div class="layers reveal" role="list">
+          <div class="layer" role="listitem">
+            <p class="layer-tag">Application layer</p>
+            <h3>WorldClick</h3>
+            <p>The participation experience: the button, points, rankings, seasons and tournaments.</p>
+          </div>
+          <div class="layer layer-token" role="listitem">
+            <p class="layer-tag">Ecosystem layer</p>
+            <h3>CLICK</h3>
+            <p>The single fungible token planned for the Solana ecosystem.</p>
+          </div>
         </div>
-        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(0,240,255,.1)"><span class="iconify text-[#00f0ff]" data-icon="lucide:shield-check" data-width="20"></span></div>
-          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk3_title">SIN IMPUESTO PERMANENTE DE TRANSFERENCIA</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk3_desc">El proyecto no usa Reward Mode ni financia al equipo mediante un impuesto permanente sobre las transacciones de los holders.</p></div>
+        <div class="token-facts reveal">
+          <dl class="facts-table">
+            <div><dt>Token</dt><dd>CLICK</dd></div>
+            <div><dt>Blockchain</dt><dd>Solana</dd></div>
+            <div><dt>Maximum planned supply</dt><dd>1,000,000,000</dd></div>
+            <div><dt>Token model</dt><dd>Single fungible token</dd></div>
+            <div><dt>Public Offering allocation</dt><dd>200,000,000</dd></div>
+            <div><dt>DBC launch allocation</dt><dd>150,000,000</dd></div>
+          </dl>
         </div>
-        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,0,51,.1)"><span class="iconify text-[#ff0033]" data-icon="lucide:trending-up" data-width="20"></span></div>
-          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk4_title">TESORERÍA DE INGRESOS REALES</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk4_desc">Solo los ingresos realmente recibidos — comisiones de creador cuando se generan, actividad del marketplace, patrocinios — financian desarrollo, competiciones e impacto.</p></div>
+        <aside class="callout reveal" role="note">
+          <p class="callout-tag">Keep the distinction</p>
+          <p>Points, clicks and scores inside the application are <strong>not</strong> token balances. The CLICK token has <strong>not been deployed</strong>: no mint address exists yet, and the token is not trading or available for purchase. The mint address will be published through official channels when the time comes.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ TOKENOMICS ============ -->
+    <section class="section section-dark" id="tokenomics" aria-labelledby="tokenomics-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index">06 — Tokenomics</p>
+          <h2 class="section-title" id="tokenomics-title">One billion,<br>allocated with intent.</h2>
+        </header>
+
+        <div class="alloc reveal">
+          <div class="alloc-bar" role="img" aria-label="Allocation chart: Public Offering 20 percent, DBC launch 15 percent, market making 12 percent, seasons and tournament rewards 8 percent, treasury and development 10 percent, team 10 percent, community and ecosystem 10 percent, impact and philanthropy 10 percent, strategic reserve 5 percent.">
+            <span class="alloc-seg" style="--w:20;--c:#9F2D2D" data-label="Public Offering · 20%"></span>
+            <span class="alloc-seg" style="--w:15;--c:#C05B3E" data-label="DBC launch · 15%"></span>
+            <span class="alloc-seg" style="--w:12;--c:#D7D0C3" data-label="Market making · 12%"></span>
+            <span class="alloc-seg" style="--w:8;--c:#8C8578" data-label="Seasons rewards · 8%"></span>
+            <span class="alloc-seg" style="--w:10;--c:#B9AE99" data-label="Treasury &amp; Dev · 10%"></span>
+            <span class="alloc-seg" style="--w:10;--c:#6E675C" data-label="Team · 10%"></span>
+            <span class="alloc-seg" style="--w:10;--c:#A39881" data-label="Community · 10%"></span>
+            <span class="alloc-seg" style="--w:10;--c:#E8DFC9" data-label="Impact · 10%"></span>
+            <span class="alloc-seg" style="--w:5;--c:#575046" data-label="Strategic Reserve · 5%"></span>
+          </div>
+
+          <table class="alloc-table">
+            <caption class="sr-only">Definitive CLICK token allocation, totalling one billion tokens</caption>
+            <thead>
+              <tr><th scope="col">Allocation</th><th scope="col">CLICK</th><th scope="col">Share</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Public Offering</td><td>200,000,000</td><td>20%</td></tr>
+              <tr><td>DBC launch curve / initial liquidity</td><td>150,000,000</td><td>15%</td></tr>
+              <tr><td>Market making / future liquidity</td><td>120,000,000</td><td>12%</td></tr>
+              <tr><td>Seasons &amp; tournament rewards</td><td>80,000,000</td><td>8%</td></tr>
+              <tr><td>Treasury &amp; Development</td><td>100,000,000</td><td>10%</td></tr>
+              <tr><td>Team</td><td>100,000,000</td><td>10%</td></tr>
+              <tr><td>Community &amp; Ecosystem</td><td>100,000,000</td><td>10%</td></tr>
+              <tr><td>Impact &amp; Philanthropy</td><td>100,000,000</td><td>10%</td></tr>
+              <tr><td>Strategic Reserve</td><td>50,000,000</td><td>5%</td></tr>
+            </tbody>
+            <tfoot>
+              <tr><td>Total</td><td>1,000,000,000</td><td>100%</td></tr>
+            </tfoot>
+          </table>
         </div>
-        <div class="feature-card rounded-xl p-6 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(255,107,53,.1)"><span class="iconify text-[#ff6b35]" data-icon="lucide:flame" data-width="20"></span></div>
-          <div><h4 class="font-semibold text-white text-sm mb-1" style="font-family:'Orbitron',sans-serif" data-i18n="tk5_title">BUYBACK & BURN POR CLICS</h4><p class="text-gray-500 text-xs leading-relaxed" data-i18n="tk5_desc">El 50% de los ingresos netos realmente recibidos compra CLICK en el mercado y lo quema permanentemente. Cada clic verificado acumula hacia hitos públicos de quema — jugar reduce directamente el supply.</p></div>
+      </div>
+    </section>
+
+    <!-- ============ PUBLIC OFFERING ============ -->
+    <section class="section" id="offering" aria-labelledby="offering-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index">07 — Public Offering</p>
+          <h2 class="section-title" id="offering-title">A public offering,<br>announced properly.</h2>
+        </header>
+        <div class="offering-grid">
+          <div class="offering-status reveal">
+            <p class="status-flag">Offering details — to be announced</p>
+            <p class="offering-lead">200,000,000 CLICK — 20% of the maximum supply — is allocated to a Public Offering designed around clear conditions:</p>
+            <ul class="ticks" role="list">
+              <li>SOL and USDC acceptance planned.</li>
+              <li>Wallet-connected participation.</li>
+              <li>Soft-cap funding condition.</li>
+              <li>Hybrid vesting model.</li>
+              <li>Refund mechanism if the soft cap is not reached.</li>
+            </ul>
+          </div>
+          <div class="offering-tba reveal" aria-label="Parameters that are not yet finalized">
+            <p class="tba-head">Not yet finalized</p>
+            <ul class="tba-chips" role="list">
+              <li>Offering price</li><li>Soft cap</li><li>Hard cap</li>
+              <li>Opening date</li><li>Closing date</li>
+              <li>Minimum contribution</li><li>Maximum contribution</li>
+              <li>Immediate unlock</li><li>Cliff</li><li>Vesting duration</li>
+              <li>Eligibility requirements</li>
+            </ul>
+            <p class="fineprint">Every value above will be published before any participation is possible. There is no active sale, no countdown and no purchase action on this page.</p>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ============ METEORA DBC ============ -->
+    <section class="section section-alt" id="dbc" aria-labelledby="dbc-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index">08 — Market launch</p>
+          <h2 class="section-title" id="dbc-title">Price discovery,<br>by design.</h2>
+        </header>
+        <p class="section-lead reveal">CLICK plans to use Meteora Dynamic Bonding Curve (DBC) for market launch and price discovery, with an allocation of 150,000,000 CLICK. The DBC pool will use one selected quote mint. Accepting SOL and USDC in the Public Offering does not mean the DBC pool accepts both as simultaneous quote assets. The final DBC configuration remains subject to publication.</p>
+        <ol class="flow reveal" aria-label="Launch flow">
+          <li><span class="flow-num" aria-hidden="true">A</span><p>Public Offering</p></li>
+          <li aria-hidden="true" class="flow-arrow">→</li>
+          <li><span class="flow-num" aria-hidden="true">B</span><p>Market Launch</p></li>
+          <li aria-hidden="true" class="flow-arrow">→</li>
+          <li><span class="flow-num" aria-hidden="true">C</span><p>DBC Price Discovery</p></li>
+          <li aria-hidden="true" class="flow-arrow">→</li>
+          <li><span class="flow-num" aria-hidden="true">D</span><p>Configured Migration</p></li>
+          <li aria-hidden="true" class="flow-arrow">→</li>
+          <li><span class="flow-num" aria-hidden="true">E</span><p>Post-Migration Liquidity</p></li>
+        </ol>
+        <p class="fineprint reveal">No prices, curve parameters or liquidity figures are displayed because none have been published.</p>
+      </div>
+    </section>
+
+    <!-- ============ BUYBACK & BURN ============ -->
+    <section class="section section-compact" id="buyback" aria-labelledby="buyback-title">
+      <div class="container buyback-grid">
+        <header class="section-head reveal">
+          <p class="section-index">09 — Buyback &amp; Burn</p>
+          <h2 class="section-title" id="buyback-title">Conditional,<br>never promised.</h2>
+        </header>
+        <div class="reveal">
+          <p class="section-lead">Where eligible net revenue is generated and received, the project may allocate a defined portion to token buybacks and burns under a transparent, published policy.</p>
+          <ul class="ticks" role="list">
+            <li>Buybacks may only use eligible net revenue actually received by the project.</li>
+            <li>They are never guaranteed, and no fixed percentage has been approved.</li>
+            <li>Clicks do not automatically trigger buybacks or burns.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ IMPACT ============ -->
+    <section class="section section-dark" id="impact" aria-labelledby="impact-title">
+      <div class="container impact-grid">
+        <div class="impact-figure reveal" aria-hidden="true">
+          <span class="impact-num">100<span>M</span></span>
+          <span class="impact-num-cap">CLICK reserved for<br>Impact &amp; Philanthropy</span>
+        </div>
+        <div>
+          <header class="section-head reveal">
+            <p class="section-index">10 — Impact &amp; Philanthropy</p>
+            <h2 class="section-title" id="impact-title">Participation<br>with a purpose.</h2>
+          </header>
+          <p class="section-lead reveal">Ten percent of the maximum supply is reserved for impact initiatives. The vision: a game the whole world can play should leave something behind in the real world.</p>
+          <p class="fineprint reveal">This is a token allocation reserved for impact initiatives — not a guaranteed fiat donation. Clicks do not automatically generate donations. Charitable partners, beneficiaries and amounts will be announced only when confirmed.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ROADMAP ============ -->
+    <section class="section" id="roadmap" aria-labelledby="roadmap-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-index">11 — Roadmap</p>
+          <h2 class="section-title" id="roadmap-title">Five stages.<br>No invented dates.</h2>
+        </header>
+        <ol class="roadmap" role="list">
+          <li class="road-item reveal">
+            <span class="road-num" aria-hidden="true">01</span>
+            <div class="road-body">
+              <div class="road-head"><h3>Foundation &amp; Preparation</h3><span class="road-status">Planned</span></div>
+              <p>Legal and operational preparation, token architecture, smart-contract development, security review and offering documentation.</p>
+            </div>
+          </li>
+          <li class="road-item reveal">
+            <span class="road-num" aria-hidden="true">02</span>
+            <div class="road-body">
+              <div class="road-head"><h3>Public Offering</h3><span class="road-status">To be announced</span></div>
+              <p>Publication of final terms, wallet-connected offering, SOL and USDC contributions, soft-cap evaluation, settlement or refunds.</p>
+            </div>
+          </li>
+          <li class="road-item reveal">
+            <span class="road-num" aria-hidden="true">03</span>
+            <div class="road-body">
+              <div class="road-head"><h3>Market Launch</h3><span class="road-status">Planned</span></div>
+              <p>CLICK mint publication, Meteora DBC configuration, price discovery and configured liquidity migration.</p>
+            </div>
+          </li>
+          <li class="road-item reveal">
+            <span class="road-num" aria-hidden="true">04</span>
+            <div class="road-body">
+              <div class="road-head"><h3>WorldClick Public Launch</h3><span class="road-status">Planned</span></div>
+              <p>Public participation experience, country rankings, participation mechanics and the first Global Season.</p>
+            </div>
+          </li>
+          <li class="road-item reveal">
+            <span class="road-num" aria-hidden="true">05</span>
+            <div class="road-body">
+              <div class="road-head"><h3>Expansion</h3><span class="road-status">Planned</span></div>
+              <p>Tournaments, ecosystem integrations, impact initiatives and additional utility features.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ CLOSING ============ -->
+    <section class="closing" aria-labelledby="closing-title">
+      <div class="container closing-inner">
+        <p class="eyebrow eyebrow-dark reveal"><span class="eyebrow-dot" aria-hidden="true"></span> WorldClick</p>
+        <h2 class="closing-title reveal" id="closing-title">One click.<br><em>A world of possibilities.</em></h2>
+        <p class="closing-lead reveal">WorldClick is an invitation to participate in something bigger than an individual action.</p>
+        <div class="hero-actions reveal">
+          <a class="btn btn-light" href="assets/CLICK-Whitepaper-V2.7.pdf">Read the whitepaper</a>
+          <a class="btn btn-outline-light" href="#top">Back to the button</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="assets/images/logo-emblem-256.png" alt="" width="56" height="56" loading="lazy">
+        <p class="footer-word">World<em>Click</em></p>
+        <p class="footer-domain">theworldclicks.com</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="#concept">Concept</a>
+        <a href="#how">How it works</a>
+        <a href="#tokenomics">Tokenomics</a>
+        <a href="#offering">Public Offering</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="assets/CLICK-Whitepaper-V2.7.pdf">Whitepaper</a>
+      </nav>
+      <div class="footer-legal">
+        <p>Nothing on this page constitutes financial advice, an offer, or a solicitation. The CLICK token is not deployed, not trading and not available for purchase. Participation mechanics described here are planned features, subject to published rules.</p>
+        <p class="footer-copy">© <span id="year">2026</span> WorldClick. All rights reserved.</p>
       </div>
     </div>
-  </div>
-</section>
+  </footer>
 
-<!-- TEAM -->
-<section id="team" class="fade-section py-24 px-6 relative">
-  <div class="absolute top-1/2 left-0 w-[600px] h-[600px] -translate-y-1/2 opacity-5" style="background:radial-gradient(circle,rgba(255,0,51,.4),transparent 70%)"></div>
-  <div class="max-w-6xl mx-auto relative z-10">
-    <div class="text-center mb-16">
-      <span class="font-mono text-xs text-[#ff0033] tracking-[0.3em] uppercase mb-4 block" data-i18n="team_label">// EL EQUIPO</span>
-      <h2 class="font-bold text-3xl md:text-5xl text-white mb-4" style="font-family:'Orbitron',sans-serif" data-i18n="team_title">EQUIPO CLICK</h2>
-      <p class="text-gray-400 text-lg max-w-2xl mx-auto" data-i18n="team_subtitle">Los que hacen que pase. Cuatro inadaptados reescribiendo las reglas, un clic a la vez.</p>
-    </div>
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="team-card rounded-xl p-6 text-center">
-        <div class="relative w-24 h-24 mx-auto mb-4">
-          <div class="absolute inset-0 rounded-full" style="background:linear-gradient(135deg,#ff0033,#ff4444);opacity:.2"></div>
-          <div class="absolute inset-1 rounded-full bg-[#0d0d15] flex items-center justify-center"><span class="iconify text-[#ff0033]" data-icon="lucide:cpu" data-width="32"></span></div>
-          <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#0d0d15] border border-[#ff0033]/30 flex items-center justify-center"><span class="iconify text-[#ff0033] text-xs" data-icon="lucide:code-2" data-width="14"></span></div>
-        </div>
-        <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Marco</h3>
-        <span class="text-xs font-mono text-[#ff0033] uppercase tracking-wider mb-3 block" data-i18n="team_marco_role">Hacker de Sueños</span>
-        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_marco_desc">Fundador. El arquitecto loco detrás de la visión. Convierte cafeína en roadmaps y caos en protocolo. Cree que un clic puede reescribir el mundo.</p>
-      </div>
-      <div class="team-card rounded-xl p-6 text-center">
-        <div class="relative w-24 h-24 mx-auto mb-4">
-          <div class="absolute inset-0 rounded-full" style="background:linear-gradient(135deg,#00f0ff,#00aaff);opacity:.2"></div>
-          <div class="absolute inset-1 rounded-full bg-[#0d0d15] flex items-center justify-center"><span class="iconify text-[#00f0ff]" data-icon="lucide:lightbulb" data-width="32"></span></div>
-          <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#0d0d15] border border-[#00f0ff]/30 flex items-center justify-center"><span class="iconify text-[#00f0ff] text-xs" data-icon="lucide:git-branch" data-width="14"></span></div>
-        </div>
-        <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Gustavo</h3>
-        <span class="text-xs font-mono text-[#00f0ff] uppercase tracking-wider mb-3 block" data-i18n="team_gustavo_role">Susurrador de Protocolos</span>
-        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_gustavo_desc">Cofundador. Creativo incorregible. El puente entre ideas locas y reglas del mundo real. Habla fluido mientras mantiene viva la emoción de la comunidad. Se asegura de que juguemos duro pero justo.</p>
-      </div>
-      <div class="team-card rounded-xl p-6 text-center">
-        <div class="relative w-24 h-24 mx-auto mb-4">
-          <div class="absolute inset-0 rounded-full" style="background:linear-gradient(135deg,#bf5af2,#ff6b35);opacity:.2"></div>
-          <div class="absolute inset-1 rounded-full bg-[#0d0d15] flex items-center justify-center"><span class="iconify text-[#bf5af2]" data-icon="lucide:briefcase" data-width="32"></span></div>
-          <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#0d0d15] border border-[#bf5af2]/30 flex items-center justify-center"><span class="iconify text-[#bf5af2] text-xs" data-icon="lucide:handshake" data-width="14"></span></div>
-        </div>
-        <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Enrique</h3>
-        <span class="text-xs font-mono text-[#bf5af2] uppercase tracking-wider mb-3 block" data-i18n="team_enrique_role">Corredor de Sombras</span>
-        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_enrique_desc">La mano invisible detrás de cada trato cerrado. Infiltra instituciones, lee la sala antes de que alguien hable, y convierte contactos fríos en alianzas cálidas. Un camaleón comercial con instintos incorruptibles.</p>
-      </div>
-      <div class="team-card rounded-xl p-6 text-center">
-        <div class="relative w-24 h-24 mx-auto mb-4">
-          <div class="absolute inset-0 rounded-full" style="background:linear-gradient(135deg,#39ff14,#00ff88);opacity:.2"></div>
-          <div class="absolute inset-1 rounded-full bg-[#0d0d15] flex items-center justify-center"><span class="iconify text-[#39ff14]" data-icon="lucide:wrench" data-width="32"></span></div>
-          <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-[#0d0d15] border border-[#39ff14]/30 flex items-center justify-center"><span class="iconify text-[#39ff14] text-xs" data-icon="lucide:terminal" data-width="14"></span></div>
-        </div>
-        <h3 class="font-bold text-white text-lg mb-1" style="font-family:'Orbitron',sans-serif">Luis</h3>
-        <span class="text-xs font-mono text-[#39ff14] uppercase tracking-wider mb-3 block" data-i18n="team_luis_role">Comodín</span>
-        <p class="text-gray-400 text-xs leading-relaxed" data-i18n="team_luis_desc">La navaja suiza en persona. Un día programando, al siguiente negociando con proveedores, y el viernes rediseñando la web. Ningún problema demasiado raro, ninguna tarea demasiado aleatoria. Si existe, él puede hacerlo.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- LEADERBOARD -->
-<section id="leaderboard" class="fade-section py-24 px-6">
-  <div class="max-w-4xl mx-auto">
-    <div class="text-center mb-16">
-      <span class="font-mono text-xs text-[#ff6b35] tracking-[0.3em] uppercase mb-4 block" data-i18n="lb_label">// RANKING GLOBAL</span>
-      <h2 class="font-bold text-3xl md:text-5xl text-white mb-4" style="font-family:'Orbitron',sans-serif" data-i18n="lb_title">RANKING MUNDIAL</h2>
-      <p class="text-gray-500 text-sm" data-i18n="lb_sub">Season 1 — <span class="text-[#ffe600] font-mono">NOT STARTED YET</span></p>
-    </div>
-    <div class="feature-card rounded-xl overflow-hidden">
-      <div class="grid grid-cols-12 gap-2 px-6 py-3 text-xs font-mono text-gray-600 uppercase tracking-wider" style="border-bottom:1px solid rgba(255,0,51,.1)">
-        <div class="col-span-1">#</div><div class="col-span-5" data-i18n="lb_country">País</div><div class="col-span-3 text-right">Clicks</div><div class="col-span-3 text-right" data-i18n="lb_prize">Premio CLICK</div>
-      </div>
-      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom:1px solid rgba(255,0,51,.05)">
-        <div class="col-span-1 font-bold text-[#ffe600]" style="font-family:'Orbitron',sans-serif">1</div>
-        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇧🇷</span><span class="text-white font-medium text-sm">Brazil</span></div>
-        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">4,281,042</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">125,000</div>
-      </div>
-      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom:1px solid rgba(255,0,51,.05)">
-        <div class="col-span-1 font-bold text-gray-400" style="font-family:'Orbitron',sans-serif">2</div>
-        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇵🇭</span><span class="text-white font-medium text-sm">Philippines</span></div>
-        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">3,891,205</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">95,000</div>
-      </div>
-      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom:1px solid rgba(255,0,51,.05)">
-        <div class="col-span-1 font-bold text-orange-400" style="font-family:'Orbitron',sans-serif">3</div>
-        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇮🇩</span><span class="text-white font-medium text-sm">Indonesia</span></div>
-        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">3,442,880</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">72,000</div>
-      </div>
-      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom:1px solid rgba(255,0,51,.05)">
-        <div class="col-span-1 font-bold text-gray-500" style="font-family:'Orbitron',sans-serif">4</div>
-        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇪🇸</span><span class="text-white font-medium text-sm">Spain</span></div>
-        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">2,104,319</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">48,000</div>
-      </div>
-      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center" style="border-bottom:1px solid rgba(255,0,51,.05)">
-        <div class="col-span-1 font-bold text-gray-500" style="font-family:'Orbitron',sans-serif">5</div>
-        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇦🇷</span><span class="text-white font-medium text-sm">Argentina</span></div>
-        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">1,987,654</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">38,000</div>
-      </div>
-      <div class="lb-row grid grid-cols-12 gap-2 px-6 py-4 items-center">
-        <div class="col-span-1 font-bold text-gray-500" style="font-family:'Orbitron',sans-serif">6</div>
-        <div class="col-span-5 flex items-center gap-2"><span class="text-lg">🇲🇽</span><span class="text-white font-medium text-sm">Mexico</span></div>
-        <div class="col-span-3 text-right font-mono text-[#ff0033] text-sm">1,756,012</div><div class="col-span-3 text-right font-mono text-[#39ff14] text-sm">29,000</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="fade-section py-24 px-6 relative">
-  <div class="absolute inset-0 opacity-20" style="background:radial-gradient(ellipse at center,rgba(255,0,51,.3) 0%,rgba(0,240,255,.1) 40%,transparent 70%)"></div>
-  <div class="max-w-4xl mx-auto relative z-10 text-center">
-    <h2 class="font-black text-4xl md:text-6xl text-white mb-4" style="font-family:'Orbitron',sans-serif" data-i18n-html="cta_title">UN CLICK PUEDE<br><span style="background:linear-gradient(135deg,#ff0033,#ff4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent">CAMBIARLO TODO.</span></h2>
-    <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto" data-i18n="cta_desc">Forma parte del movimiento. Juega, compite, gana y cambia el mundo — un clic a la vez.</p>
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-      <button onclick="showToast(currentT.toast_launch||'Coming soon')" class="btn-cyber px-10 py-4 rounded-xl font-bold text-lg text-white flex items-center gap-3" style="font-family:'Orbitron',sans-serif">
-        <span class="iconify" data-icon="lucide:rocket" data-width="24"></span><span data-i18n="cta_getClick">CONSEGUIR $CLICK</span>
-      </button>
-      <button disabled class="btn-disabled px-10 py-4 rounded-xl font-semibold text-lg flex items-center gap-3" style="font-family:'Orbitron',sans-serif">
-        <span class="iconify" data-icon="lucide:gamepad-2" data-width="24"></span><span data-i18n="cta_play">JUGAR — PRÓXIMAMENTE</span>
-      </button>
-    </div>
-    <div class="flex items-center justify-center gap-4">
-      <a href="#" onclick="showToast('Twitter');return false" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:twitter" data-width="20"></span></a>
-      <a href="#" onclick="showToast('Discord');return false" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:message-circle" data-width="20"></span></a>
-      <a href="#" onclick="showToast('Telegram');return false" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:send" data-width="20"></span></a>
-      <a href="whitepaper-click-v2.5.pdf" target="_blank" class="w-12 h-12 rounded-xl flex items-center justify-center feature-card hover:border-[#ff0033]/40 transition-all"><span class="iconify text-gray-400" data-icon="lucide:book-open" data-width="20"></span></a>
-    </div>
-  </div>
-</section>
-
-<footer class="py-12 px-6" style="border-top:1px solid rgba(255,0,51,.08)">
-  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-    <div class="flex items-center gap-3">
-      <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#ff0033,#ff4444)"><span class="font-bold text-xs text-white" style="font-family:'Orbitron',sans-serif">W</span></div>
-      <span class="font-mono text-xs text-gray-600" data-i18n="footer_copy">Botón Mundial (CLICK) © 2026 — Impulsado por Solana</span>
-    </div>
-    <div class="launchpad-badge px-3 py-1 rounded-full flex items-center gap-1.5">
-      <span class="text-xs font-mono text-[#ff0033] font-medium" data-i18n="footer_launchpad">Lanzamiento en StonkFun</span>
-    </div>
-  </div>
-</footer>
-
-<div id="toast" class="toast flex items-center gap-3"><span id="toastMsg" class="text-sm text-white font-medium"></span></div>
-
-<script>
-let currentLang = 'es';
-let currentT = {};
-
-async function setLang(lang) {
-  currentLang = lang;
-  document.documentElement.lang = lang;
-  document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
-  ['es','en','fr','ar','zh','pt','ja','ko','hi'].forEach(l => {
-    const btn = document.getElementById('lang' + l.toUpperCase());
-    if(btn) btn.classList.toggle('active', l === lang);
-  });
-  try {
-    const res = await fetch(`locales/${lang}.json`);
-    if(!res.ok) throw new Error('fetch failed');
-    currentT = await res.json();
-  } catch(e) {
-    console.warn('Failed to load locale, using page defaults');
-    currentT = {};
-  }
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (currentT[key] !== undefined) el.innerHTML = currentT[key];
-  });
-  document.querySelectorAll('[data-i18n-title]').forEach(el => {
-    const key = el.getAttribute('data-i18n-title');
-    if (currentT[key] !== undefined) {
-      el.textContent = currentT[key];
-      el.setAttribute('data-text', currentT[key]);
-    }
-  });
-  document.querySelectorAll('[data-i18n-html]').forEach(el => {
-    const key = el.getAttribute('data-i18n-html');
-    if (currentT[key] !== undefined) el.innerHTML = currentT[key];
-  });
-}
-
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  const toastMsg = document.getElementById('toastMsg');
-  toastMsg.textContent = msg;
-  toast.classList.add('show');
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(() => toast.classList.remove('show'), 3000);
-}
-
-(function() {
-  const container = document.getElementById('particles');
-  const colors = ['#ff0033', '#ff4444', '#00f0ff', '#39ff14', '#bf5af2', '#ffe600'];
-  for (let i = 0; i < 40; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const left = Math.random() * 100;
-    const dur = 8 + Math.random() * 12;
-    const delay = Math.random() * dur;
-    const drift = (Math.random() - 0.5) * 100;
-    p.style.cssText = `left:${left}%;bottom:-10px;background:${color};box-shadow:0 0 6px ${color};animation-duration:${dur}s;animation-delay:-${delay}s;--drift:${drift}px;`;
-    container.appendChild(p);
-  }
-})();
-
-const fadeSections = document.querySelectorAll('.fade-section');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-fadeSections.forEach(s => observer.observe(s));
-
-setLang('es');
-</script>
+  <script src="js/app.js" defer></script>
 </body>
 </html>
